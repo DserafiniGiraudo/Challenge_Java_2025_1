@@ -1,0 +1,15 @@
+services:
+  eureka-server:
+    ports:
+      - "8761:8761"
+  redis:
+    ports:
+      - "6379:6379"
+
+  msvc-puntos-ventas:
+     ports:
+      - ${MSVC_PUNTOS_VENTAS_PORT}:${MSVC_PUNTOS_VENTAS_PORT}
+
+  # mysql:
+  #   ports:
+  #       - "3306:3306"

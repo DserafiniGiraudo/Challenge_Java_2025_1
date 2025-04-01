@@ -1,0 +1,29 @@
+server:
+  port: 8010
+
+spring:
+  application:
+    name: msvc-puntos-ventas
+
+  cache:
+    type: redis
+  data:
+    redis:
+      host: localhost 
+      port: 6379
+
+  profiles:
+    active: dev
+
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    
+    
+
+# swagger-ui custom path
+# springdoc:
+#   swagger-ui:
+#     path: ${spring.application.name}/swagger-ui.html
