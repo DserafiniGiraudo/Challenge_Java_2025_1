@@ -7,8 +7,11 @@ services:
       - "${REDIS_PORT}:${REDIS_PORT}"
 
   msvc-puntos-ventas:
-     ports:
+    ports:
       - ${MSVC_PUNTOS_VENTAS_PORT}:${MSVC_PUNTOS_VENTAS_PORT}
+    environment:
+      SPRING_PROFILES_ACTIVE: ${ENVIRONMENT}
+    
 
   # mysql:
   #   ports:
