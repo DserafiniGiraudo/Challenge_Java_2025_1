@@ -1,10 +1,10 @@
 services:
   eureka-server:
     ports:
-      - "8761:8761"
+      - "${EUREKA_SERVER_PORT}:${EUREKA_SERVER_PORT}"
   redis:
     ports:
-      - "6379:6379"
+      - "${REDIS_PORT}:${REDIS_PORT}"
 
   msvc-puntos-ventas:
      ports:

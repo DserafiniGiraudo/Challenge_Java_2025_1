@@ -13,3 +13,6 @@ eureka:
     instance:
         hostname: eureka-serverr
         prefer-ip-address: false
+
+server:
+    port: ${EUREKA_SERVER_PORT}
