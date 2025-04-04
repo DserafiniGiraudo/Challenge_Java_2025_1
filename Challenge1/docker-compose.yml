@@ -38,6 +38,19 @@ services:
       redis:
         condition: service_healthy
 
+  msvc-puntos-costos:
+    container_name: msvc-puntos-costos
+    build:
+      context: .
+      dockerfile: msvc-puntos-costos/Dockerfile
+    networks:
+      - challenge_network
+    env_file:
+      - .env
+    depends_on:
+      redis:
+        condition: service_healthy
+
 
 networks:
   challenge_network:

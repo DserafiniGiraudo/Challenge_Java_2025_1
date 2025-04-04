@@ -11,6 +11,12 @@ services:
       - ${MSVC_PUNTOS_VENTAS_PORT}:${MSVC_PUNTOS_VENTAS_PORT}
     environment:
       SPRING_PROFILES_ACTIVE: ${ENVIRONMENT}
+
+  msvc-puntos-costos:
+    ports:
+      - ${MSVC_PUNTOS_COSTOS_PORT}:${MSVC_PUNTOS_COSTOS_PORT}
+    environment:
+      SPRING_PROFILES_ACTIVE: ${ENVIRONMENT}
     
 
   # mysql:
