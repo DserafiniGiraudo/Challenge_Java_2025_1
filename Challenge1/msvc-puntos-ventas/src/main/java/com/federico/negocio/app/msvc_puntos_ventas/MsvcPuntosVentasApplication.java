@@ -8,7 +8,6 @@ import org.springframework.cache.annotation.EnableCaching;
 @EnableCaching
 public class MsvcPuntosVentasApplication {
 	public static void main(String[] args) {
-		System.out.println("MSVC-PUNTOS-VENTAS -> PROPIEDADES DE ENTORNO --->" + System.getProperties());
 		SpringApplication.run(MsvcPuntosVentasApplication.class, args);
 	}
 }
