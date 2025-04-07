@@ -1,17 +1,16 @@
-package com.federico.negocio.app.msvc_puntos_costos.domain;
+package com.federico.negocio.app.msvc_puntos_costos.domain.dto;
 
 import com.federico.negocio.libs.commons.libs_msvc_commons.domain.PuntoVenta;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-@AllArgsConstructor
-@Builder
-public class CaminoPK {
+public class CaminoPKRequest {
 
+    @NotNull
     private PuntoVenta puntoA;
+    @NotNull
     private PuntoVenta puntoB;
 
 }

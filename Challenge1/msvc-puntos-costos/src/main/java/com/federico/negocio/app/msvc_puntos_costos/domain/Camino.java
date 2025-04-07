@@ -1,8 +1,10 @@
 package com.federico.negocio.app.msvc_puntos_costos.domain;
 
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 public class Camino {
 
     CaminoPK caminoPK;
