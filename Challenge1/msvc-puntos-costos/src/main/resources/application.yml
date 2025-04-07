@@ -23,3 +23,7 @@ eureka:
     prefer-ip-address: true
     hostname: msvc-puntos-ventas
     instance-id: ${spring.cloud.client.hostname}:${spring.application.name}:${MSVC_COSTOS_PORT}
+
+services:
+  msvc-puntos-ventas:
+    url: http://msvc-puntos-ventas

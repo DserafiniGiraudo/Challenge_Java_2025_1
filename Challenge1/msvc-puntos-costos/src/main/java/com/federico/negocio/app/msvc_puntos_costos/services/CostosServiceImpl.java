@@ -16,7 +16,6 @@ import com.federico.negocio.app.msvc_puntos_costos.services.client.PuntoVentaCli
 import com.federico.negocio.libs.commons.libs_msvc_commons.domain.PuntoVenta;
 import com.federico.negocio.libs.commons.libs_msvc_commons.exception.*;
 
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 
 
@@ -28,7 +27,6 @@ public class CostosServiceImpl implements CostosService {
 
     private final PuntoVentaClient puntoVentaClient;
 
-    @PostConstruct
     private void init() {
         List <PuntoVenta> puntosVentas = puntoVentaClient.findAll();
         Map<Integer, PuntoVenta> mapaPuntos = puntosVentas
@@ -57,6 +55,10 @@ public class CostosServiceImpl implements CostosService {
 
     @Override
     public List<Camino> consultarCaminos() {
+
+        if(caminos.isEmpty()){
+            init();
+        }
         return caminos.values().stream().collect(Collectors.toList());
     }
 

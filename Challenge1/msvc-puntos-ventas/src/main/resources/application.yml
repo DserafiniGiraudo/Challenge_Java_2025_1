@@ -1,5 +1,5 @@
 server:
-  port: ${MSVC_PUNTOS_VENTAS_PORT:8010}
+  port: ${MSVC_PUNTOS_VENTAS_PORT}
 
 spring:
   application:

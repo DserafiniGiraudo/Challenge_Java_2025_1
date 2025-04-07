@@ -1,5 +1,7 @@
 package com.federico.negocio.app.msvc_puntos_costos.config;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -7,8 +9,12 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Configuration
 public class PuntoventaConfig {
 
+    @Value("${services.msvc-puntos-ventas.url}")
+    private String urlPuntosVentas;
+
     @Bean
-    WebClient.Builder webClientBuilder() {
-        return WebClient.builder();
+    @LoadBalanced
+    WebClient.Builder builder() {
+        return WebClient.builder().baseUrl(urlPuntosVentas);
     }
 }

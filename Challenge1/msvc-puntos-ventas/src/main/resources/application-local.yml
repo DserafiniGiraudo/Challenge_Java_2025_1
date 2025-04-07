@@ -17,10 +17,21 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+  instance:
+    prefer-ip-address: true
+    hostname: msvc-puntos-ventas
+    instance-id: ${spring.cloud.client.hostname}:${spring.application.name}:${server.port}
     
     
 
-# swagger-ui custom path
 # springdoc:
 #   swagger-ui:
 #     path: ${spring.application.name}/swagger-ui.html
