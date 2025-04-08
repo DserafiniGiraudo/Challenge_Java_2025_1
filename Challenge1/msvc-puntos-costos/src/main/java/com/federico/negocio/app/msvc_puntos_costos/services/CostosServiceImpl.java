@@ -27,44 +27,58 @@ public class CostosServiceImpl implements CostosService {
 
     private final PuntoVentaClient puntoVentaClient;
 
-    private void init() {
-        List <PuntoVenta> puntosVentas = puntoVentaClient.findAll();
-        Map<Integer, PuntoVenta> mapaPuntos = puntosVentas
-                .stream()
-                .collect(Collectors.toMap(PuntoVenta::getId, Function.identity()));
-        List<Camino> caminosList = new ArrayList<>();
+    private boolean initialized = false;
 
-        caminosList.add(crearCamino(mapaPuntos, 1, 2, 2));
-        caminosList.add(crearCamino(mapaPuntos, 1, 3, 3));
-        caminosList.add(crearCamino(mapaPuntos, 2, 3, 5));
-        caminosList.add(crearCamino(mapaPuntos, 2, 4, 10));
-        caminosList.add(crearCamino(mapaPuntos, 1, 4, 11));
-        caminosList.add(crearCamino(mapaPuntos, 4, 5, 5));
-        caminosList.add(crearCamino(mapaPuntos, 2, 5, 10));
-        caminosList.add(crearCamino(mapaPuntos, 6, 7, 32));
-        caminosList.add(crearCamino(mapaPuntos, 8, 9, 11));
-        caminosList.add(crearCamino(mapaPuntos, 10, 7, 5));
-        caminosList.add(crearCamino(mapaPuntos, 3, 8, 10));
-        caminosList.add(crearCamino(mapaPuntos, 5, 8, 10));
-        caminosList.add(crearCamino(mapaPuntos, 10, 5, 5));
-        caminosList.add(crearCamino(mapaPuntos, 4, 6, 6));
+    private synchronized void init() {
 
-        caminosList.forEach(c -> caminos.put(c.getCaminoPK(), c));
-        caminosList.forEach(c -> caminos.put(c.caminoInverso().getCaminoPK(), c.caminoInverso()));
+        if (!caminos.isEmpty() || initialized) {
+            return;
+        }
+        initialized = true;
+        try {
+            List <PuntoVenta> puntosVentas = puntoVentaClient.findAll();
+            Map<Integer, PuntoVenta> mapaPuntos = puntosVentas
+                    .stream()
+                    .collect(Collectors.toMap(PuntoVenta::getId, Function.identity()));
+            List<Camino> caminosList = new ArrayList<>();
+    
+            caminosList.add(crearCamino(mapaPuntos, 1, 2, 2));
+            caminosList.add(crearCamino(mapaPuntos, 1, 3, 3));
+            caminosList.add(crearCamino(mapaPuntos, 2, 3, 5));
+            caminosList.add(crearCamino(mapaPuntos, 2, 4, 10));
+            caminosList.add(crearCamino(mapaPuntos, 1, 4, 11));
+            caminosList.add(crearCamino(mapaPuntos, 4, 5, 5));
+            caminosList.add(crearCamino(mapaPuntos, 2, 5, 10));
+            caminosList.add(crearCamino(mapaPuntos, 6, 7, 32));
+            caminosList.add(crearCamino(mapaPuntos, 8, 9, 11));
+            caminosList.add(crearCamino(mapaPuntos, 10, 7, 5));
+            caminosList.add(crearCamino(mapaPuntos, 3, 8, 10));
+            caminosList.add(crearCamino(mapaPuntos, 5, 8, 10));
+            caminosList.add(crearCamino(mapaPuntos, 10, 5, 5));
+            caminosList.add(crearCamino(mapaPuntos, 4, 6, 6));
+    
+            caminosList.forEach(c -> caminos.put(c.getCaminoPK(), c));
+            caminosList.forEach(c -> caminos.put(c.caminoInverso().getCaminoPK(), c.caminoInverso()));
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
+    private Map<CaminoPK, Camino> getCaminos() {
+        if (caminos.isEmpty()) {
+            init();
+        }
+        return caminos;
     }
 
     @Override
     public List<Camino> consultarCaminos() {
-
-        if(caminos.isEmpty()){
-            init();
-        }
-        return caminos.values().stream().collect(Collectors.toList());
+        return getCaminos().values().stream().collect(Collectors.toList());
     }
 
     @Override
     public void cargarCosto(CaminoPK caminoPK,int costo) {
-        if (caminos.keySet().stream()
+        if (getCaminos().keySet().stream()
                 .anyMatch(cpk -> 
                 (cpk.getPuntoA().equals(caminoPK.getPuntoA()) && cpk.getPuntoB().equals(caminoPK.getPuntoB())) ||
                 (cpk.getPuntoA().equals(caminoPK.getPuntoB()) && cpk.getPuntoB().equals(caminoPK.getPuntoA())))) {
@@ -81,8 +95,7 @@ public class CostosServiceImpl implements CostosService {
 
     @Override
     public void removerCosto(CaminoPKRequest caminoRequest) {
-       
-        if (caminos.keySet().stream()
+        if (getCaminos().keySet().stream()
                 .noneMatch(cpk -> 
                 (cpk.getPuntoA().equals(caminoRequest.getPuntoA()) && cpk.getPuntoB().equals(caminoRequest.getPuntoB())) ||
                 (cpk.getPuntoA().equals(caminoRequest.getPuntoB()) && cpk.getPuntoB().equals(caminoRequest.getPuntoA())))) {
@@ -98,8 +111,7 @@ public class CostosServiceImpl implements CostosService {
 
     @Override
     public Map<Long,Integer> consultarPuntoventa(Integer puntoA) {
-
-        return caminos.values().stream()
+        return getCaminos().values().stream()
             .filter(camino -> camino.getCaminoPK().getPuntoA().getId().equals(puntoA))
             .collect(Collectors.toMap(
                 camino -> camino.getCaminoPK().getPuntoB().getId().longValue(),
@@ -109,7 +121,6 @@ public class CostosServiceImpl implements CostosService {
 
     @Override
     public int consultarCostoMinimo(CaminoPKRequest caminoRequest) {
-
         throw new UnsupportedOperationException("Unimplemented method 'consultarCostoMinimo'");
         // boolean existePuntoB =caminos.keySet().stream()
         //     .anyMatch(cpk-> cpk.getPuntoB().equals(PuntoB));
@@ -144,10 +155,6 @@ public class CostosServiceImpl implements CostosService {
             // .orElse(0);
 
     }
-    
-
-
-    
 
     private Camino crearCamino(Map<Integer, PuntoVenta> mapaPuntos, int idA, int idB, int costo) {
         CaminoPK pk = CaminoPK.builder()
@@ -159,5 +166,4 @@ public class CostosServiceImpl implements CostosService {
                 .costo(costo)
                 .build();
     }
-
 }
