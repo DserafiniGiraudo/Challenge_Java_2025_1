@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.federico.negocio.app.msvc_puntos_costos.domain.Camino;
+import com.federico.negocio.app.msvc_puntos_costos.domain.CaminoFinder.ResultadoCamino;
 import com.federico.negocio.app.msvc_puntos_costos.domain.dto.CaminoPKRequest;
 import com.federico.negocio.app.msvc_puntos_costos.domain.dto.CaminoRequest;
 import com.federico.negocio.app.msvc_puntos_costos.services.CostosService;
@@ -54,7 +55,7 @@ public class CostosController {
 
     @GetMapping("/costoMinimo")
     @ResponseStatus(HttpStatus.OK)
-    public int consultarCostoMinimo(@RequestBody @Valid CaminoPKRequest caminoRequest) {
+    public ResultadoCamino consultarCostoMinimo(@RequestBody @Valid CaminoPKRequest caminoRequest) {
         return service.consultarCostoMinimo(caminoRequest);
     }
 }

@@ -7,9 +7,12 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.federico.negocio.app.msvc_puntos_costos.domain.Camino;
+import com.federico.negocio.app.msvc_puntos_costos.domain.CaminoFinder;
+import com.federico.negocio.app.msvc_puntos_costos.domain.CaminoFinder.ResultadoCamino;
 import com.federico.negocio.app.msvc_puntos_costos.domain.CaminoPK;
 import com.federico.negocio.app.msvc_puntos_costos.domain.dto.CaminoPKRequest;
 import com.federico.negocio.app.msvc_puntos_costos.services.client.PuntoVentaClient;
@@ -18,7 +21,6 @@ import com.federico.negocio.libs.commons.libs_msvc_commons.exception.*;
 
 import lombok.RequiredArgsConstructor;
 
-
 @Service
 @RequiredArgsConstructor
 public class CostosServiceImpl implements CostosService {
@@ -26,6 +28,7 @@ public class CostosServiceImpl implements CostosService {
     HashMap<CaminoPK,Camino> caminos = new HashMap<CaminoPK,Camino>();
 
     private final PuntoVentaClient puntoVentaClient;
+    private final CaminoFinder caminoFinder;
 
     private boolean initialized = false;
 
@@ -72,6 +75,7 @@ public class CostosServiceImpl implements CostosService {
     }
 
     @Override
+    @Cacheable(value = "caminos")
     public List<Camino> consultarCaminos() {
         return getCaminos().values().stream().collect(Collectors.toList());
     }
@@ -110,6 +114,7 @@ public class CostosServiceImpl implements CostosService {
     }
 
     @Override
+    @Cacheable(value = "puntosVenta", key = "#puntoA")
     public Map<Long,Integer> consultarPuntoventa(Integer puntoA) {
         return getCaminos().values().stream()
             .filter(camino -> camino.getCaminoPK().getPuntoA().getId().equals(puntoA))
@@ -120,40 +125,8 @@ public class CostosServiceImpl implements CostosService {
     }
 
     @Override
-    public int consultarCostoMinimo(CaminoPKRequest caminoRequest) {
-        throw new UnsupportedOperationException("Unimplemented method 'consultarCostoMinimo'");
-        // boolean existePuntoB =caminos.keySet().stream()
-        //     .anyMatch(cpk-> cpk.getPuntoB().equals(PuntoB));
-
-        //     if(!existePuntoB){
-        //         throw new RuntimeException("El punto B no existe");
-        //     }
-
-        // Optional<Camino> caminoDirectoOptional = caminos.values().stream()
-        //     .filter(c -> c.getCaminoPK().getPuntoA().equals(puntoA) && c.getCaminoPK().getPuntoB().equals(PuntoB))
-        //     .findFirst();
-            
-        //     if(caminoDirectoOptional.isPresent()){
-        //         return caminoDirectoOptional.get().getCosto();
-        //     }
-
-            /* 
-             * 1)Filtro todos los caminos que el origen sean el punto A.
-             * 2)obtengo todos los puntos B de esos caminos
-             * 3)Obtengo todos los puntos a los que van esos caminos
-             * 4)Filtrar solo los destinos que coincidan con el punto B
-             * 5)Obtengo el valor del punto B
-            */
-
-            // return caminos.values().stream()
-            // .filter(camino-> camino.getCaminoPK().getPuntoA().equals(puntoA))
-            // .map(camino-> camino.getCaminoPK().getPuntoB())
-            // .map(this::consultarPuntoventa1)
-            // .filter(puntoVenta-> puntoVenta.containsKey(PuntoB))
-            // .map(puntoVenta-> puntoVenta.get(PuntoB))
-            // .findFirst()
-            // .orElse(0);
-
+    public ResultadoCamino consultarCostoMinimo(CaminoPKRequest caminoRequest) {
+        return caminoFinder.caminoMinimo(getCaminos().values().stream().toList(), caminoRequest);
     }
 
     private Camino crearCamino(Map<Integer, PuntoVenta> mapaPuntos, int idA, int idB, int costo) {
