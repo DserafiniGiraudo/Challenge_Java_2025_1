@@ -1,0 +1,58 @@
+services:
+  eureka-server:
+    container_name: eureka-server
+    build:
+      context: ./eureka-server 
+      dockerfile: Dockerfile 
+    networks:
+      - challenge_network
+    env_file:
+      - .env
+
+  redis:
+    container_name: redis
+    image: redis:latest
+    volumes:
+      - redis_data:/data/db
+    networks:
+      - challenge_network
+    depends_on:
+      - eureka-server
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  msvc-puntos-ventas:
+    container_name: msvc-puntos-ventas
+    build:
+      context: .
+      dockerfile: msvc-puntos-ventas/Dockerfile
+    networks:
+      - challenge_network
+    env_file:
+      - .env
+    depends_on:
+      redis:
+        condition: service_healthy
+
+  msvc-puntos-costos:
+    container_name: msvc-puntos-costos
+    build:
+      context: .
+      dockerfile: msvc-puntos-costos/Dockerfile
+    networks:
+      - challenge_network
+    env_file:
+      - .env
+    depends_on:
+      redis:
+        condition: service_healthy
+
+networks:
+  challenge_network:
+    driver: bridge
+
+volumes:
+  redis_data:

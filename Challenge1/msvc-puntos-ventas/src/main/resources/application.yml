@@ -1,0 +1,25 @@
+server:
+  port: ${MSVC_PUNTOS_VENTAS_PORT}
+
+spring:
+  application:
+    name: msvc-puntos-ventas
+
+  cache:
+    type: redis
+  data:
+    redis:
+      host: redis
+      port: ${REDIS_PORT}
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://eureka-server:8761/eureka
+
+  instance:
+    prefer-ip-address: true
+    hostname: msvc-puntos-ventas
+    instance-id: ${spring.cloud.client.hostname}:${spring.application.name}:${MSVC_PUNTOS_VENTAS_PORT}

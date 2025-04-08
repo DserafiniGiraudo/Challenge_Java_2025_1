@@ -1,0 +1,24 @@
+services:
+  eureka-server:
+    ports:
+      - "${EUREKA_SERVER_PORT}:${EUREKA_SERVER_PORT}"
+  redis:
+    ports:
+      - "${REDIS_PORT}:${REDIS_PORT}"
+
+  msvc-puntos-ventas:
+    ports:
+      - ${MSVC_PUNTOS_VENTAS_PORT}:${MSVC_PUNTOS_VENTAS_PORT}
+    environment:
+      SPRING_PROFILES_ACTIVE: ${ENVIRONMENT}
+
+  msvc-puntos-costos:
+    ports:
+      - ${MSVC_PUNTOS_COSTOS_PORT}:${MSVC_PUNTOS_COSTOS_PORT}
+    environment:
+      SPRING_PROFILES_ACTIVE: ${ENVIRONMENT}
+    
+
+  # mysql:
+  #   ports:
+  #       - "3306:3306"
