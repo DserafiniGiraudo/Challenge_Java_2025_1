@@ -25,30 +25,51 @@ import lombok.RequiredArgsConstructor;
 public class PuntoVentaServiceImpl implements PuntoVentaService {
 
     private final PuntoVentaDao puntoVentaDao;
-    private final AtomicInteger idGenerator = new AtomicInteger(1);
+    private final AtomicInteger idGenerator = new AtomicInteger(0);
 
     @PostConstruct
-    private void poblarPuntosVenta() {
+    private void inicializarIdGenerator() {
+        StreamSupport.stream(puntoVentaDao.findAll().spliterator(), false)
+                .map(PuntoVenta::getId)
+                .max(Integer::compareTo)
+                .ifPresent(maxId -> idGenerator.set(maxId));
+
         if (puntoVentaDao.count() == 0) {
-            List<PuntoVenta> puntosVenta = Arrays.asList(
-                    convertirAPuntoVenta(new PuntoVentaRequest("CABA")),
-                    convertirAPuntoVenta(new PuntoVentaRequest("GBA1")),
-                    convertirAPuntoVenta(new PuntoVentaRequest("GBA_2")),
-                    convertirAPuntoVenta(new PuntoVentaRequest("Santa Fe")),
-                    convertirAPuntoVenta(new PuntoVentaRequest("Cordoba")),
-                    convertirAPuntoVenta(new PuntoVentaRequest("Misiones")),
-                    convertirAPuntoVenta(new PuntoVentaRequest("Salta")),
-                    convertirAPuntoVenta(new PuntoVentaRequest("Chubut")),
-                    convertirAPuntoVenta(new PuntoVentaRequest("Santa Cruz")),
-                    convertirAPuntoVenta(new PuntoVentaRequest("Catamarca"))
-            );
-            puntoVentaDao.saveAll(puntosVenta);
+            poblarPuntosVentaInicial();
         }
+    }
+
+    private void poblarPuntosVentaInicial() {
+        List<PuntoVenta> puntosVenta = Arrays.asList(
+                convertirAPuntoVentaInterno(new PuntoVentaRequest("CABA")),
+                convertirAPuntoVentaInterno(new PuntoVentaRequest("GBA1")),
+                convertirAPuntoVentaInterno(new PuntoVentaRequest("GBA_2")),
+                convertirAPuntoVentaInterno(new PuntoVentaRequest("Santa Fe")),
+                convertirAPuntoVentaInterno(new PuntoVentaRequest("Cordoba")),
+                convertirAPuntoVentaInterno(new PuntoVentaRequest("Misiones")),
+                convertirAPuntoVentaInterno(new PuntoVentaRequest("Salta")),
+                convertirAPuntoVentaInterno(new PuntoVentaRequest("Chubut")),
+                convertirAPuntoVentaInterno(new PuntoVentaRequest("Santa Cruz")),
+                convertirAPuntoVentaInterno(new PuntoVentaRequest("Catamarca"))
+        );
+        puntoVentaDao.saveAll(puntosVenta);
+
+        // Actualizar el idGenerator después de la población inicial
+        puntosVenta.stream()
+                .map(PuntoVenta::getId)
+                .max(Integer::compareTo)
+                .ifPresent(maxId -> idGenerator.set(Math.max(idGenerator.get(), maxId)));
+    }
+
+    private PuntoVenta convertirAPuntoVentaInterno(PuntoVentaRequest request) {
+        PuntoVenta puntoVenta = new PuntoVenta();
+        puntoVenta.setId(idGenerator.incrementAndGet());
+        puntoVenta.setPuntoVenta(request.puntoVenta());
+        return puntoVenta;
     }
 
     private PuntoVenta convertirAPuntoVenta(PuntoVentaRequest request) {
         PuntoVenta puntoVenta = new PuntoVenta();
-        puntoVenta.setId(idGenerator.getAndIncrement());
         puntoVenta.setPuntoVenta(request.puntoVenta());
         return puntoVenta;
     }
@@ -56,44 +77,39 @@ public class PuntoVentaServiceImpl implements PuntoVentaService {
     @Override
     @Cacheable(value = "puntosVenta", key = "#id")
     public PuntoVenta findById(int id) {
-       return puntoVentaDao
-            .findById(id)
-            .orElseThrow(() -> new NotFoundException("PuntoVenta no encontrado con ID: " + id));
+        return puntoVentaDao
+                .findById(id)
+                .orElseThrow(() -> new NotFoundException("PuntoVenta no encontrado con ID: " + id));
     }
 
     @Override
-    // @Cacheable(value = "puntosVentaList")
     public List<PuntoVenta> findAll() {
         return StreamSupport
-            .stream(puntoVentaDao.findAll().spliterator(), false)
-            .collect(Collectors.toList());
+                .stream(puntoVentaDao.findAll().spliterator(), false)
+                .collect(Collectors.toList());
     }
 
     @Override
-    @CacheEvict(value = "puntosVentaList", allEntries = true)
     public PuntoVenta save(PuntoVentaRequest puntoVenta) {
-
-        PuntoVenta pv = PuntoVenta.builder()
-            .id(idGenerator.incrementAndGet())
-            .puntoVenta(puntoVenta.puntoVenta())
-            .build();
+        PuntoVenta pv = convertirAPuntoVenta(puntoVenta);
+        pv.setId(idGenerator.incrementAndGet());
         return puntoVentaDao.save(pv);
     }
 
     @Override
-    @CacheEvict(value = {"puntosVenta", "puntosVentaList"}, allEntries = true, key = "#puntoVenta.id")
+    @CacheEvict(value = {"puntosVenta"}, key = "#puntoVenta.id")
     public PuntoVenta update(PuntoVentaRequest puntoVenta, int id) {
         return puntoVentaDao
-        .findById(id)
-        .map(existingPuntoVenta -> {
-            existingPuntoVenta.setPuntoVenta(puntoVenta.puntoVenta());
-            return puntoVentaDao.save(existingPuntoVenta);
-        })
-        .orElseThrow(() -> new NotFoundException("PuntoVenta no encontrado con ID: " + id));
+                .findById(id)
+                .map(existingPuntoVenta -> {
+                    existingPuntoVenta.setPuntoVenta(puntoVenta.puntoVenta());
+                    return puntoVentaDao.save(existingPuntoVenta);
+                })
+                .orElseThrow(() -> new NotFoundException("PuntoVenta no encontrado con ID: " + id));
     }
 
     @Override
-    @CacheEvict(value = {"puntosVenta", "puntosVentaList"}, allEntries = true, key = "#id")
+    @CacheEvict(value = {"puntosVenta"}, key = "#id")
     public void delete(int id) {
         puntoVentaDao.deleteById(id);
     }
