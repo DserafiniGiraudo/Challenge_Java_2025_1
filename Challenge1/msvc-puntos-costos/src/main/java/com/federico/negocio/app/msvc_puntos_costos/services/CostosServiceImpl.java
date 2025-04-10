@@ -1,6 +1,7 @@
 package com.federico.negocio.app.msvc_puntos_costos.services;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +10,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 import com.federico.negocio.app.msvc_puntos_costos.domain.Camino;
 import com.federico.negocio.app.msvc_puntos_costos.domain.CaminoFinder;
@@ -19,6 +21,7 @@ import com.federico.negocio.app.msvc_puntos_costos.services.client.PuntoVentaCli
 import com.federico.negocio.libs.commons.libs_msvc_commons.domain.PuntoVenta;
 import com.federico.negocio.libs.commons.libs_msvc_commons.exception.*;
 
+import jakarta.ws.rs.InternalServerErrorException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -81,20 +84,45 @@ public class CostosServiceImpl implements CostosService {
     }
 
     @Override
-    public void cargarCosto(CaminoPK caminoPK,int costo) {
-        if (getCaminos().keySet().stream()
-                .anyMatch(cpk -> 
-                (cpk.getPuntoA().equals(caminoPK.getPuntoA()) && cpk.getPuntoB().equals(caminoPK.getPuntoB())) ||
-                (cpk.getPuntoA().equals(caminoPK.getPuntoB()) && cpk.getPuntoB().equals(caminoPK.getPuntoA())))) {
+    public void cargarCosto(CaminoPK caminoPK, int costo) {
+
+         boolean existeCamino = getCaminos().keySet().stream()
+                .anyMatch(cpk -> (
+                    cpk.getPuntoA().getId().equals(caminoPK.getPuntoA().getId()) &&
+                    cpk.getPuntoB().getId().equals(caminoPK.getPuntoB().getId())) ||
+                    (cpk.getPuntoA().getId().equals(caminoPK.getPuntoB().getId()) &&
+                    cpk.getPuntoB().getId().equals(caminoPK.getPuntoA().getId())));
+
+        if (existeCamino) {
             throw new ConflictException("El camino ya existe");
         }
-        Camino camino = Camino.builder()
-            .caminoPK(caminoPK)
-            .costo(costo)
-            .build();
-        caminos.put(caminoPK, camino);
-        Camino caminoInverso = camino.caminoInverso();
-        caminos.put(caminoInverso.getCaminoPK(), caminoInverso);
+        try {
+            List<PuntoVenta> puntosVentaEncontrados = Arrays.asList(caminoPK.getPuntoA(), caminoPK.getPuntoB())
+                    .stream()
+                    .map(pv -> puntoVentaClient.findById(pv.getId()))
+                    .collect(Collectors.toList());
+
+                    if (puntosVentaEncontrados.isEmpty()) {
+                        throw new NotFoundException("Uno o ambos puntos de venta no existen");
+                    }
+
+                   CaminoPK cpk = CaminoPK.builder()
+                            .puntoA(puntosVentaEncontrados.get(0))
+                            .puntoB(puntosVentaEncontrados.get(1))
+                            .build();
+                    Camino camino = Camino.builder()
+                            .caminoPK(cpk)
+                            .costo(costo)
+                            .build();
+                            
+                    caminos.put(cpk, camino);
+                    Camino caminoInverso = camino.caminoInverso();
+                    caminos.put(caminoInverso.getCaminoPK(), caminoInverso);
+        } catch (WebClientResponseException e) {
+            throw e;
+        } catch (Exception e){
+            throw new InternalServerErrorException(String.format("Error al consumir msvc-puntos-ventas: %s", e.getMessage()));
+        }
     }
 
     @Override
