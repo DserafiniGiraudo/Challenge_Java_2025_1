@@ -19,6 +19,8 @@ import com.federico.negocio.app.msvc_puntos_ventas.services.PuntoVentaService;
 import com.federico.negocio.libs.commons.libs_msvc_commons.domain.PuntoVenta;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @RequestMapping("/puntosVentas")
@@ -54,5 +56,11 @@ public class PuntoVentaController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable int id) {
         service.delete(id);
+    }
+    
+    @GetMapping("/nombres/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public String findNameById(@PathVariable int id) {
+        return service.findNameById(id);
     }
 }

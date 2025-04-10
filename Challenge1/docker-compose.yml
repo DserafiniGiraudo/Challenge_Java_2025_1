@@ -24,6 +24,22 @@ services:
       timeout: 5s
       retries: 3
 
+  mysql:
+    container_name: mysql
+    image: mariadb:10.11-alpine
+    environment:
+      - MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      - MYSQL_USER: ${MYSQL_USER}
+      - MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      - MYSQL_DATABASE: ${MYSQL_DATABASE}
+    networks:
+      - challenge_network
+    healthcheck:
+    test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u${MYSQL_USER}", "-p${MYSQL_PASSWORD}"]
+    interval: 10s
+    timeout: 5s
+    retries: 5
+
   msvc-puntos-ventas:
     container_name: msvc-puntos-ventas
     build:

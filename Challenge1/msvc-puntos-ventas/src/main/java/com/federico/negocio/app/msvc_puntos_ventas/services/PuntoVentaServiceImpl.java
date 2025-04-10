@@ -118,4 +118,14 @@ public class PuntoVentaServiceImpl implements PuntoVentaService {
     private void eliminarPuntosVenta() {
         puntoVentaDao.deleteAll();
     }
+
+    @Override
+    public String findNameById(int id) {
+        return puntoVentaDao
+                .findById(id)
+                .map(PuntoVenta::getPuntoVenta)
+                .orElseThrow(() -> new NotFoundException("PuntoVenta no encontrado con ID: " + id));
+    }
+
+    
 }

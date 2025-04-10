@@ -13,4 +13,5 @@ public interface PuntoVentaService {
     public PuntoVenta save(PuntoVentaRequest puntoVenta);
     public PuntoVenta update(PuntoVentaRequest puntoVenta,int id);
     public void delete(int id);
+    public String findNameById(int id);
 }

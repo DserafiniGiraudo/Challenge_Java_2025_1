@@ -24,7 +24,10 @@ eureka:
     hostname: msvc-puntos-costos
     instance-id: ${spring.cloud.client.hostname}:${spring.application.name}:${server.port}
 
-
+services:
+  msvc-puntos-ventas:
+    url: http://msvc-puntos-ventas
+    
 # springdoc:
 #   swagger-ui:
 #     path: ${spring.application.name}/swagger-ui.html
