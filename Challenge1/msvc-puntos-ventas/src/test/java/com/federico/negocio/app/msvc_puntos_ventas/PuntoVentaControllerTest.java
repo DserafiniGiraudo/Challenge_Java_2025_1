@@ -1,6 +1,7 @@
 package com.federico.negocio.app.msvc_puntos_ventas;
 
 import com.federico.negocio.app.msvc_puntos_ventas.controller.PuntoVentaController;
+import com.federico.negocio.app.msvc_puntos_ventas.domain.requests.PuntoVentaRequest;
 import com.federico.negocio.app.msvc_puntos_ventas.services.PuntoVentaService;
 import com.federico.negocio.libs.commons.libs_msvc_commons.domain.PuntoVenta;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -91,7 +92,7 @@ public class PuntoVentaControllerTest {
 
         @Test
         void save_deberiaRetornarPuntoVentaCreado() throws Exception {
-            when(service.save(any(PuntoVenta.class))).thenReturn(puntoVentas.get(0)); // Usando el primer puntoVenta
+            when(service.save(any(PuntoVentaRequest.class))).thenReturn(puntoVentas.get(0)); // Usando el primer puntoVenta
 
             mockMvc.perform(post("/puntosVentas")
                     .contentType(MediaType.APPLICATION_JSON)
@@ -100,7 +101,7 @@ public class PuntoVentaControllerTest {
                     .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                     .andExpect(jsonPath("$.id").value(1));
 
-            verify(service, times(1)).save(any(PuntoVenta.class));
+            verify(service, times(1)).save(any(PuntoVentaRequest.class));
         }
     }
 
@@ -109,7 +110,7 @@ public class PuntoVentaControllerTest {
 
         @Test
         void update_deberiaRetornarPuntoVentaActualizado() throws Exception {
-            when(service.update(any(PuntoVenta.class), eq(1))).thenReturn(puntoVentas.get(0)); // Usando el primer puntoVenta
+            when(service.update(any(PuntoVentaRequest.class), eq(1))).thenReturn(puntoVentas.get(0)); // Usando el primer puntoVenta
 
             mockMvc.perform(put("/puntosVentas/1")
                     .contentType(MediaType.APPLICATION_JSON)
@@ -118,7 +119,7 @@ public class PuntoVentaControllerTest {
                     .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                     .andExpect(jsonPath("$.id").value(1));
 
-            verify(service, times(1)).update(any(PuntoVenta.class), eq(1));
+            verify(service, times(1)).update(any(PuntoVentaRequest.class), eq(1));
         }
     }
 

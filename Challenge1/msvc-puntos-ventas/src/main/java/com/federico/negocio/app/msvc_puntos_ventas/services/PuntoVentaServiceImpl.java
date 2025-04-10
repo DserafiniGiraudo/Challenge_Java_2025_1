@@ -2,6 +2,7 @@ package com.federico.negocio.app.msvc_puntos_ventas.services;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -10,6 +11,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.federico.negocio.app.msvc_puntos_ventas.dao.PuntoVentaDao;
+import com.federico.negocio.app.msvc_puntos_ventas.domain.requests.PuntoVentaRequest;
 import com.federico.negocio.libs.commons.libs_msvc_commons.domain.PuntoVenta;
 import com.federico.negocio.libs.commons.libs_msvc_commons.exception.NotFoundException;
 
@@ -23,25 +25,32 @@ import lombok.RequiredArgsConstructor;
 public class PuntoVentaServiceImpl implements PuntoVentaService {
 
     private final PuntoVentaDao puntoVentaDao;
+    private final AtomicInteger idGenerator = new AtomicInteger(1);
 
     @PostConstruct
     private void poblarPuntosVenta() {
-        List<PuntoVenta> puntosVenta = Arrays.asList(
-                new PuntoVenta(1, "CABA"),
-                new PuntoVenta(2, "GBA1"),
-                new PuntoVenta(3, "GBA_2"),
-                new PuntoVenta(4, "Santa Fe"),
-                new PuntoVenta(5, "Cordoba"),
-                new PuntoVenta(6, "Misiones"),
-                new PuntoVenta(7, "Salta"),
-                new PuntoVenta(8, "Chubut"),
-                new PuntoVenta(9, "Santa Cruz"),
-                new PuntoVenta(10, "Catamarca")
-        );
-
-        if(puntoVentaDao.count() == 0){
+        if (puntoVentaDao.count() == 0) {
+            List<PuntoVenta> puntosVenta = Arrays.asList(
+                    convertirAPuntoVenta(new PuntoVentaRequest("CABA")),
+                    convertirAPuntoVenta(new PuntoVentaRequest("GBA1")),
+                    convertirAPuntoVenta(new PuntoVentaRequest("GBA_2")),
+                    convertirAPuntoVenta(new PuntoVentaRequest("Santa Fe")),
+                    convertirAPuntoVenta(new PuntoVentaRequest("Cordoba")),
+                    convertirAPuntoVenta(new PuntoVentaRequest("Misiones")),
+                    convertirAPuntoVenta(new PuntoVentaRequest("Salta")),
+                    convertirAPuntoVenta(new PuntoVentaRequest("Chubut")),
+                    convertirAPuntoVenta(new PuntoVentaRequest("Santa Cruz")),
+                    convertirAPuntoVenta(new PuntoVentaRequest("Catamarca"))
+            );
             puntoVentaDao.saveAll(puntosVenta);
         }
+    }
+
+    private PuntoVenta convertirAPuntoVenta(PuntoVentaRequest request) {
+        PuntoVenta puntoVenta = new PuntoVenta();
+        puntoVenta.setId(idGenerator.getAndIncrement());
+        puntoVenta.setPuntoVenta(request.puntoVenta());
+        return puntoVenta;
     }
 
     @Override
@@ -53,7 +62,7 @@ public class PuntoVentaServiceImpl implements PuntoVentaService {
     }
 
     @Override
-    @Cacheable(value = "puntosVentaList")
+    // @Cacheable(value = "puntosVentaList")
     public List<PuntoVenta> findAll() {
         return StreamSupport
             .stream(puntoVentaDao.findAll().spliterator(), false)
@@ -61,17 +70,23 @@ public class PuntoVentaServiceImpl implements PuntoVentaService {
     }
 
     @Override
-    public PuntoVenta save(PuntoVenta puntoVenta) {
-        return puntoVentaDao.save(puntoVenta);
+    @CacheEvict(value = "puntosVentaList", allEntries = true)
+    public PuntoVenta save(PuntoVentaRequest puntoVenta) {
+
+        PuntoVenta pv = PuntoVenta.builder()
+            .id(idGenerator.incrementAndGet())
+            .puntoVenta(puntoVenta.puntoVenta())
+            .build();
+        return puntoVentaDao.save(pv);
     }
 
     @Override
     @CacheEvict(value = {"puntosVenta", "puntosVentaList"}, allEntries = true, key = "#puntoVenta.id")
-    public PuntoVenta update(PuntoVenta puntoVenta, int id) {
+    public PuntoVenta update(PuntoVentaRequest puntoVenta, int id) {
         return puntoVentaDao
         .findById(id)
         .map(existingPuntoVenta -> {
-            existingPuntoVenta.setPuntoVenta(puntoVenta.getPuntoVenta());
+            existingPuntoVenta.setPuntoVenta(puntoVenta.puntoVenta());
             return puntoVentaDao.save(existingPuntoVenta);
         })
         .orElseThrow(() -> new NotFoundException("PuntoVenta no encontrado con ID: " + id));
