@@ -126,6 +126,4 @@ public class PuntoVentaServiceImpl implements PuntoVentaService {
                 .map(PuntoVenta::getPuntoVenta)
                 .orElseThrow(() -> new NotFoundException("PuntoVenta no encontrado con ID: " + id));
     }
-
-    
 }
