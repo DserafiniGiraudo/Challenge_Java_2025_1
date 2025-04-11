@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,11 +15,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.federico.negocio.app.msvc_puntos_costos.domain.Camino;
+import com.federico.negocio.app.msvc_puntos_costos.domain.CaminoFinder.ResultadoCamino;
 import com.federico.negocio.app.msvc_puntos_costos.domain.dto.CaminoPKRequest;
 import com.federico.negocio.app.msvc_puntos_costos.domain.dto.CaminoRequest;
 import com.federico.negocio.app.msvc_puntos_costos.services.CostosService;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -36,13 +37,13 @@ public class CostosController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void cargarCosto(@RequestBody @Valid CaminoRequest caminoRequest) {
-        service.cargarCosto(caminoRequest.getCaminoPK(), caminoRequest.getCosto());
+    public void cargarCosto(@RequestBody @Validated CaminoRequest caminoRequest) {
+        service.cargarCosto(caminoRequest.caminoPK(), caminoRequest.costo());
     }
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void removerCosto(@RequestBody @Valid CaminoPKRequest caminoRequest) {
+    public void removerCosto(@RequestBody @Validated CaminoPKRequest caminoRequest) {
         service.removerCosto(caminoRequest);
     }
 
@@ -54,7 +55,7 @@ public class CostosController {
 
     @GetMapping("/costoMinimo")
     @ResponseStatus(HttpStatus.OK)
-    public int consultarCostoMinimo(@RequestBody @Valid CaminoPKRequest caminoRequest) {
+    public ResultadoCamino consultarCostoMinimo(@RequestBody @Validated CaminoPKRequest caminoRequest) {
         return service.consultarCostoMinimo(caminoRequest);
     }
 }
