@@ -3,6 +3,7 @@ package com.federico.negocio.app.msvc_acreditaciones.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -14,6 +15,9 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 
 import com.federico.negocio.libs.commons.libs_msvc_commons.exception.ConflictException;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -53,6 +57,15 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Object> handleGeneralExceptions(Exception ex) {
         Map<String, String> errors = new HashMap<>();
         errors.put("error", ex.getMessage() == null ? "Ocurrió un error inesperado." : ex.getMessage());
+        return new ResponseEntity<>(errors, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(DataAccessException.class)
+    public ResponseEntity<Object> handleDataAccessExceptions(DataAccessException ex) {
+        Map<String, String> errors = new HashMap<>();
+        String errorMessage = "Ocurrió un error al acceder a los datos. Por favor, contacte al administrador.";
+        errors.put("error", errorMessage);
+        log.error("Error de acceso a datos", ex);
         return new ResponseEntity<>(errors, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

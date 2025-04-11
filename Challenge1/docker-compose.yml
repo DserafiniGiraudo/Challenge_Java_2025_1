@@ -26,19 +26,21 @@ services:
 
   mysql:
     container_name: mysql
-    image: mariadb:10.11-alpine
+    image: mysql:latest
     environment:
-      - MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      - MYSQL_USER: ${MYSQL_USER}
-      - MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      - MYSQL_DATABASE: ${MYSQL_DATABASE}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+    volumes:
+      - mysql_data:/var/lib/mysql
     networks:
       - challenge_network
     healthcheck:
-    test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u${MYSQL_USER}", "-p${MYSQL_PASSWORD}"]
-    interval: 10s
-    timeout: 5s
-    retries: 5
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   msvc-puntos-ventas:
     container_name: msvc-puntos-ventas
@@ -66,9 +68,25 @@ services:
       redis:
         condition: service_healthy
 
+  msvc-acreditaciones:
+    container_name: msvc-acreditaciones
+    build:
+      context: .
+      dockerfile: msvc-acreditaciones/Dockerfile
+    env_file:
+      - .env
+    networks:
+      - challenge_network
+    depends_on:
+      mysql:
+        condition: service_healthy
+      msvc-puntos-ventas:
+        condition: service_started
+
 networks:
   challenge_network:
     driver: bridge
 
 volumes:
   redis_data:
+  mysql_data:

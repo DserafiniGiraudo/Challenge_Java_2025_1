@@ -6,6 +6,9 @@ services:
     ports:
       - "${REDIS_PORT}:${REDIS_PORT}"
 
+  mysql:
+    ports:
+      - "${MYSQL_PORT}:${MYSQL_PORT}"
   msvc-puntos-ventas:
     ports:
       - ${MSVC_PUNTOS_VENTAS_PORT}:${MSVC_PUNTOS_VENTAS_PORT}
@@ -15,6 +18,12 @@ services:
   msvc-puntos-costos:
     ports:
       - ${MSVC_PUNTOS_COSTOS_PORT}:${MSVC_PUNTOS_COSTOS_PORT}
+    environment:
+      SPRING_PROFILES_ACTIVE: ${ENVIRONMENT}
+  
+  msvc-acreditaciones:
+    ports:
+      - ${MSVC_ACREDITACIONES_PORT}:${MSVC_ACREDITACIONES_PORT}
     environment:
       SPRING_PROFILES_ACTIVE: ${ENVIRONMENT}
     
