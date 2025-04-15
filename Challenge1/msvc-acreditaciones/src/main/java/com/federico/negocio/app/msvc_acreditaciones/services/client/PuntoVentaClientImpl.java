@@ -8,20 +8,20 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class PuntoVentaClientImpl implements PuntoVentaClient {
-    
-    private final WebClient.Builder builder;
+
+    private final WebClient webClient;
 
     @Override
     public String findNameById(int id) {
         try {
-           return builder.build().get()
-                .uri("/puntosVentas/nombres/{id}", id)
-                .retrieve()
-                .bodyToMono(String.class)
-                .block();
-        
-       } catch (Exception e) {
-        throw e;
-       }
+            return webClient.get()
+                    .uri("/puntosVentas/nombres/{id}", id)
+                    .retrieve()
+                    .bodyToMono(String.class)
+                    .block();
+
+        } catch (Exception e) {
+            throw e;
+        }
     }
 }
