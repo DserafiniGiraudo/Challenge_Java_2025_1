@@ -9,4 +9,6 @@ Tener docker-desktop
 
 - Clonar el repositorio
 - Crear un arhivo .env a partir del template y completar las variables
-- Levantar los servicios ```docker-compose -f docker-compose.yml -f  docker-compose-dev.yml up --build -d```
+- Levantar los servicios ```docker-compose up --build -d```
+- Acceder a la documentacion a traves del link ```http://localhost:8080/swagger-ui.html```
+
