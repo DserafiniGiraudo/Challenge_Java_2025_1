@@ -1,33 +1,28 @@
 services:
   eureka-server:
     ports:
-      - "${EUREKA_SERVER_PORT}:${EUREKA_SERVER_PORT}"
+      - 8761:8761
   redis:
     ports:
-      - "${REDIS_PORT}:${REDIS_PORT}"
+      - 6379:6379
 
   mysql:
     ports:
-      - "${MYSQL_PORT}:${MYSQL_PORT}"
+      - 3306:3306
   msvc-puntos-ventas:
     ports:
-      - ${MSVC_PUNTOS_VENTAS_PORT}:${MSVC_PUNTOS_VENTAS_PORT}
+      - 8010:8010
     environment:
       SPRING_PROFILES_ACTIVE: ${ENVIRONMENT}
 
   msvc-puntos-costos:
     ports:
-      - ${MSVC_PUNTOS_COSTOS_PORT}:${MSVC_PUNTOS_COSTOS_PORT}
+      - 8020:8020
     environment:
       SPRING_PROFILES_ACTIVE: ${ENVIRONMENT}
   
   msvc-acreditaciones:
     ports:
-      - ${MSVC_ACREDITACIONES_PORT}:${MSVC_ACREDITACIONES_PORT}
+      - 8030:8030
     environment:
       SPRING_PROFILES_ACTIVE: ${ENVIRONMENT}
-    
-
-  # mysql:
-  #   ports:
-  #       - "3306:3306"

@@ -27,6 +27,7 @@ public class PuntoVentaServiceImpl implements PuntoVentaService {
     private final PuntoVentaDao puntoVentaDao;
     private final AtomicInteger idGenerator = new AtomicInteger(0);
 
+
     @PostConstruct
     private void inicializarIdGenerator() {
         StreamSupport.stream(puntoVentaDao.findAll().spliterator(), false)
@@ -97,7 +98,7 @@ public class PuntoVentaServiceImpl implements PuntoVentaService {
     }
 
     @Override
-    @CacheEvict(value = {"puntosVenta"}, key = "#puntoVenta.id")
+    @CacheEvict(value = {"puntosVenta"}, key = "#id")
     public PuntoVenta update(PuntoVentaRequest puntoVenta, int id) {
         return puntoVentaDao
                 .findById(id)

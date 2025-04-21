@@ -83,6 +83,25 @@ services:
       msvc-puntos-ventas:
         condition: service_started
 
+  gateway:
+    container_name: gateway
+    build:
+      context: .
+      dockerfile: gateway/Dockerfile
+    networks:
+      - challenge_network
+    env_file:
+      - .env
+    depends_on:
+      msvc-puntos-ventas:
+        condition: service_started
+      msvc-puntos-costos:
+        condition: service_started
+      msvc-acreditaciones:
+        condition: service_started
+    ports:
+      - "8080:${GATEWAY_PORT}"
+
 networks:
   challenge_network:
     driver: bridge

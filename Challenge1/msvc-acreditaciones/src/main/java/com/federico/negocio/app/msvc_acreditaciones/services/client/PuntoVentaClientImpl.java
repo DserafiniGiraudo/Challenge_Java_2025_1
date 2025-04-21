@@ -9,12 +9,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PuntoVentaClientImpl implements PuntoVentaClient {
 
-    private final WebClient webClient;
+    private final WebClient.Builder builder;
 
     @Override
     public String findNameById(int id) {
         try {
-            return webClient.get()
+            return builder.build().get()
                     .uri("/puntosVentas/nombres/{id}", id)
                     .retrieve()
                     .bodyToMono(String.class)

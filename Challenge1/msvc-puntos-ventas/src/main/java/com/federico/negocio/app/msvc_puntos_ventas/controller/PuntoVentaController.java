@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +21,7 @@ import com.federico.negocio.libs.commons.libs_msvc_commons.domain.PuntoVenta;
 
 import lombok.RequiredArgsConstructor;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/puntosVentas")
 @RequiredArgsConstructor

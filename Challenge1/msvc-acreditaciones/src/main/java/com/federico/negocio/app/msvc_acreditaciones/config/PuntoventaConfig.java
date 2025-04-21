@@ -6,9 +6,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import com.federico.negocio.app.msvc_acreditaciones.services.client.PuntoVentaClient;
-import com.federico.negocio.app.msvc_acreditaciones.services.client.PuntoVentaClientImpl;
-
 @Configuration
 public class PuntoventaConfig {
 
@@ -17,9 +14,7 @@ public class PuntoventaConfig {
 
     @Bean
     @LoadBalanced
-    public PuntoVentaClient puntoVentaClient() {
-        return new PuntoVentaClientImpl(WebClient.builder()
-            .baseUrl(urlPuntosVentas) 
-            .build());
+    WebClient.Builder builder() {
+        return WebClient.builder().baseUrl(urlPuntosVentas);
     }
 }
