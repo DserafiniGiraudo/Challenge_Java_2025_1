@@ -36,18 +36,18 @@ spring:
                     - Path=/msvc-puntos-ventas/v3/api-docs
                   filters:
                     - RewritePath=/msvc-puntos-ventas/v3/api-docs, /v3/api-docs
-                # - id: puntos-costos-swagger
-                #   uri: lb://msvc-puntos-costos
-                #   predicates:
-                #     - Path=/msvc-puntos-costos/v3/api-docs
-                #   filters:
-                #   - RewritePath=/msvc-puntos-costos/v3/api-docs, /v3/api-docs
-                # - id: acreditaciones-swagger
-                #   uri: lb://msvc-acreditaciones
-                #   predicates:
-                #     - Path=/msvc-acreditaciones/v3/api-docs
-                #   filters:
-                #     - RewritePath=/msvc-acreditaciones/v3/api-docs, /v3/api-docs
+                - id: puntos-costos-swagger
+                  uri: lb://msvc-puntos-costos
+                  predicates:
+                    - Path=/msvc-puntos-costos/v3/api-docs
+                  filters:
+                  - RewritePath=/msvc-puntos-costos/v3/api-docs, /v3/api-docs
+                - id: acreditaciones-swagger
+                  uri: lb://msvc-acreditaciones
+                  predicates:
+                    - Path=/msvc-acreditaciones/v3/api-docs
+                  filters:
+                    - RewritePath=/msvc-acreditaciones/v3/api-docs, /v3/api-docs
 
 eureka:
   client:
@@ -61,7 +61,7 @@ springdoc:
     urls:
       - name: Puntos Ventas
         url: /msvc-puntos-ventas/v3/api-docs
-      # - name: Puntos Costos
-      #   url: /msvc-puntos-costos/v3/api-docs
-      # - name: Acreditaciones
-      #   url: /msvc-acreditaciones/v3/api-docs
+      - name: Puntos Costos
+        url: /msvc-puntos-costos/v3/api-docs
+      - name: Acreditaciones
+        url: /msvc-acreditaciones/v3/api-docs
