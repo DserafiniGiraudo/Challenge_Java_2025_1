@@ -10,6 +10,7 @@ import org.jgrapht.graph.SimpleDirectedWeightedGraph;
 import org.springframework.stereotype.Component;
 
 import com.federico.negocio.app.msvc_puntos_costos.domain.dto.CaminoPKRequest;
+import com.federico.negocio.app.msvc_puntos_costos.domain.dto.ResultadoCamino;
 import com.federico.negocio.libs.commons.libs_msvc_commons.domain.PuntoVenta;
 import com.federico.negocio.libs.commons.libs_msvc_commons.exception.NotFoundException;
 
@@ -47,7 +48,6 @@ public class CaminoFinder {
                         .toList());
     }
 
-    public record ResultadoCamino(int costoTotal, List<String> camino) {
-    }
+    
 
 }

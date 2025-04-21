@@ -27,7 +27,7 @@ eureka:
   instance:
     prefer-ip-address: true
     hostname: msvc-acreditaciones
-    instance-id: ${spring.cloud.client.hostname}:${spring.application.name}:${server.port}
+    instance-id: ${spring.cloud.client.hostname}:${spring.application.name}:${random.uuid}
 
 services:
   msvc-puntos-ventas:

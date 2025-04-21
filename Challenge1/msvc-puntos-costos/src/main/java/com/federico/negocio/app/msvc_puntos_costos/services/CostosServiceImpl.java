@@ -14,9 +14,9 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 
 import com.federico.negocio.app.msvc_puntos_costos.domain.Camino;
 import com.federico.negocio.app.msvc_puntos_costos.domain.CaminoFinder;
-import com.federico.negocio.app.msvc_puntos_costos.domain.CaminoFinder.ResultadoCamino;
 import com.federico.negocio.app.msvc_puntos_costos.domain.CaminoPK;
 import com.federico.negocio.app.msvc_puntos_costos.domain.dto.CaminoPKRequest;
+import com.federico.negocio.app.msvc_puntos_costos.domain.dto.ResultadoCamino;
 import com.federico.negocio.app.msvc_puntos_costos.services.client.PuntoVentaClient;
 import com.federico.negocio.libs.commons.libs_msvc_commons.domain.PuntoVenta;
 import com.federico.negocio.libs.commons.libs_msvc_commons.exception.*;

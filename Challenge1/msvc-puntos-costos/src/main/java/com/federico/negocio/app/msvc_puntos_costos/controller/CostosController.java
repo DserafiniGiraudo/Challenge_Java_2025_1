@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,13 +16,14 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.federico.negocio.app.msvc_puntos_costos.domain.Camino;
-import com.federico.negocio.app.msvc_puntos_costos.domain.CaminoFinder.ResultadoCamino;
 import com.federico.negocio.app.msvc_puntos_costos.domain.dto.CaminoPKRequest;
 import com.federico.negocio.app.msvc_puntos_costos.domain.dto.CaminoRequest;
+import com.federico.negocio.app.msvc_puntos_costos.domain.dto.ResultadoCamino;
 import com.federico.negocio.app.msvc_puntos_costos.services.CostosService;
 
 import lombok.RequiredArgsConstructor;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/costos")
 @RequiredArgsConstructor
