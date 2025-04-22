@@ -13,7 +13,8 @@
 - ✅ **JUnit y Mockito para testing**
 - 🧪 **Cobertura de test: ~70%**
 - 🧾 **Swagger para documentación**
-
+- 🟥 **Redis** – Cache en memoria
+- 🐬 **MySQL** – Base de datos relacional
 ---
 
 ## ☕️ Características de Java 17
@@ -32,6 +33,55 @@ public record AcreditacionResponse(
     double importe,
     LocalDate fechaPedido) {}
 ```
+## 🧩 Patrones de diseño utilizados
+
+Este proyecto aplica diversos patrones de diseño para mejorar la escalabilidad, mantenibilidad y claridad del código. La mayoría se encarga SpringBoot como el Singleton.
+
+### 🟢 Singleton
+Se utilizó para clases que deben tener una única instancia compartida, como servicios utilitarios o manejadores de configuración.
+
+> Ejemplo: `Servicios anotados con @Service, controladores con @RestController`
+
+---
+
+### 🧱 Builder
+Se aplicó para la construcción de objetos complejos de manera controlada, especialmente en DTOs o configuraciones con muchos parámetros opcionales.
+
+```java
+PuntoVenta puntoVenta = PuntoVenta.builder()
+        .id(1)
+        .puntoVenta("CABA")
+        .build();
+```
+
+## ⚡ Uso de Lombok
+
+Este proyecto utiliza [**Lombok**](https://projectlombok.org/) para reducir la verbosidad del código Java, generando automáticamente métodos comunes como getters, setters, constructores, `equals()`, `hashCode()` y más.
+
+### ✨ Anotaciones comunes utilizadas
+
+- `@Getter`, `@Setter` → Generan automáticamente los métodos de acceso.
+- `@Builder` → Facilita la creación de objetos con el patrón Builder.
+- `@AllArgsConstructor`, `@NoArgsConstructor` → Generan constructores.
+- `@Data` → Combina `@Getter`, `@Setter`, `@ToString`, `@EqualsAndHashCode`, y `@RequiredArgsConstructor`.
+- `@Value` → Marca la clase como inmutable.
+
+### 🔍 Ejemplo:
+
+```java
+@Data
+@AllArgsConstructor
+@Builder
+public class CaminoPK {
+
+    private PuntoVenta puntoA;
+    private PuntoVenta puntoB;
+
+}
+```
+
+🧼 Esto promueve un enfoque de código limpio, enfocado en la lógica y no en el boilerplate.
+
 ### 📂 Estructura del proyecto
 
 ![image](https://github.com/user-attachments/assets/1dc52c8e-eedd-4829-ac07-fb7654c318c0)
