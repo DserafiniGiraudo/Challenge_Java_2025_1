@@ -16,8 +16,22 @@
 
 ---
 
-## 📸 Vista previa del proyecto
+## ☕️ Características de Java 17
 
+Este proyecto utiliza **Java 17**, lo que nos permite aprovechar nuevas funcionalidades del lenguaje que mejoran la legibilidad, mantenibilidad y seguridad del código.
+
+### 🔹 `record` para clases inmutables
+
+Simplificamos clases que sólo representan datos como requests/responses utilizando `record`, lo cual reduce el boilerplate automáticamente:
+
+```java
+public record AcreditacionResponse(
+    String id,
+    int identificadorPuntoVenta,
+    String nombrePuntoventa,
+    double importe,
+    LocalDate fechaPedido) {}
+```
 ### 📂 Estructura del proyecto
 
 ![image](https://github.com/user-attachments/assets/1dc52c8e-eedd-4829-ac07-fb7654c318c0)
