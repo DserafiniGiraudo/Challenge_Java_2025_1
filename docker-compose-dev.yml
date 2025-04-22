@@ -1,0 +1,28 @@
+services:
+  eureka-server:
+    ports:
+      - 8761:8761
+  redis:
+    ports:
+      - 6379:6379
+
+  mysql:
+    ports:
+      - 3306:3306
+  msvc-puntos-ventas:
+    ports:
+      - 8010:8010
+    environment:
+      SPRING_PROFILES_ACTIVE: ${ENVIRONMENT}
+
+  msvc-puntos-costos:
+    ports:
+      - 8020:8020
+    environment:
+      SPRING_PROFILES_ACTIVE: ${ENVIRONMENT}
+  
+  msvc-acreditaciones:
+    ports:
+      - 8030:8030
+    environment:
+      SPRING_PROFILES_ACTIVE: ${ENVIRONMENT}

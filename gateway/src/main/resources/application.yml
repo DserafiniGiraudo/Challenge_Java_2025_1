@@ -1,0 +1,67 @@
+server:
+    port: 8080
+
+spring:
+    application:
+        name: gateway
+
+    cloud:
+        gateway:
+            discovery:
+              locator:
+                enabled: true
+            routes:
+                - id: puntos-ventas-route
+                  uri: lb://msvc-puntos-ventas
+                  predicates:
+                    - Path=/api/v1/puntosVentas/**
+                  filters:
+                    - StripPrefix=2 
+                - id: puntos-costos-route
+                  uri: lb://msvc-puntos-costos
+                  predicates:
+                    - Path=/api/v1/costos/**
+                  filters:
+                    - StripPrefix=2
+                - id: acreditaciones-route
+                  uri: lb://msvc-acreditaciones
+                  predicates:
+                    - Path=/api/v1/acreditaciones/**
+                  filters:
+                    - StripPrefix=2
+
+                - id: puntos-ventas-swagger
+                  uri: lb://msvc-puntos-ventas
+                  predicates:
+                    - Path=/msvc-puntos-ventas/v3/api-docs
+                  filters:
+                    - RewritePath=/msvc-puntos-ventas/v3/api-docs, /v3/api-docs
+                - id: puntos-costos-swagger
+                  uri: lb://msvc-puntos-costos
+                  predicates:
+                    - Path=/msvc-puntos-costos/v3/api-docs
+                  filters:
+                  - RewritePath=/msvc-puntos-costos/v3/api-docs, /v3/api-docs
+                - id: acreditaciones-swagger
+                  uri: lb://msvc-acreditaciones
+                  predicates:
+                    - Path=/msvc-acreditaciones/v3/api-docs
+                  filters:
+                    - RewritePath=/msvc-acreditaciones/v3/api-docs, /v3/api-docs
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka-server:${EUREKA_SERVER_PORT}/eureka
+
+springdoc:
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    urls:
+      - name: Puntos Ventas
+        url: /msvc-puntos-ventas/v3/api-docs
+      - name: Puntos Costos
+        url: /msvc-puntos-costos/v3/api-docs
+      - name: Acreditaciones
+        url: /msvc-acreditaciones/v3/api-docs
