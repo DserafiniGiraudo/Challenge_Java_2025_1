@@ -105,7 +105,7 @@ Accedé a la documentación en:
 
 ![image](https://github.com/user-attachments/assets/adc47106-5ce5-40ec-9ae6-d5d5ceba3759)
 
-
+**msvc-acreditaciones si bien tiene un porcentaje bajo, se debe a metodos privados y/o configuracion de inicalizacion que no se pueden acceder desde testing.
 
 ---
 
