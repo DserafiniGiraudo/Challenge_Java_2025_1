@@ -76,5 +76,7 @@ Accedé a la documentación en:
 1. **Clonar el repositorio**
 
    ```bash
-   git clone https://github.com/tuusuario/accenture-contents.git
-   cd accenture-contents
+   git clone https://github.com/DserafiniGiraudo/accenture-contents.git
+   cd Challenge1
+   docker-compose up --build -d
+   ```
