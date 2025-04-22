@@ -1,0 +1,33 @@
+server:
+  port: 8020
+
+spring:
+  application:
+    name: msvc-puntos-costos
+
+  cache:
+    type: redis
+  data:
+    redis:
+      host: redis
+      port: 6379
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+  instance:
+    prefer-ip-address: true
+    hostname: msvc-puntos-costos
+    instance-id: ${spring.cloud.client.hostname}:${spring.application.name}:${random.uuid}
+
+services:
+  msvc-puntos-ventas:
+    url: http://msvc-puntos-ventas
+    
+# springdoc:
+#   swagger-ui:
+#     path: ${spring.application.name}/swagger-ui.html

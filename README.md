@@ -1,2 +1,141 @@
-# Challenge_Java_2025_1
-Challenge técnico realizado con Java y SpringBoot, Dockerizado.
+# 🧠 Challenge_Java_2025_1
+
+> Proyecto desarrollado con Java y Spring Boot, dockerizado y con test coverage superior al 70%.  
+> Permite la ejecución local mediante Docker y expone una API documentada con Swagger.
+
+---
+
+## 📦 Tecnologías Utilizadas
+
+- ⚙️ **Java 17**
+- 🌱 **Spring Boot**
+- 🐳 **Docker / Docker Compose**
+- ✅ **JUnit y Mockito para testing**
+- 🧪 **Cobertura de test: ~70%**
+- 🧾 **Swagger para documentación**
+- 🟥 **Redis** – Cache en memoria
+- 🐬 **MySQL** – Base de datos relacional
+---
+
+## ☕️ Características de Java 17
+
+Este proyecto utiliza **Java 17**, lo que nos permite aprovechar nuevas funcionalidades del lenguaje que mejoran la legibilidad, mantenibilidad y seguridad del código.
+
+### 🔹 `record` para clases inmutables
+
+Simplificamos clases que sólo representan datos como requests/responses utilizando `record`, lo cual reduce el boilerplate automáticamente:
+
+```java
+public record AcreditacionResponse(
+    String id,
+    int identificadorPuntoVenta,
+    String nombrePuntoventa,
+    double importe,
+    LocalDate fechaPedido) {}
+```
+## 🧩 Patrones de diseño utilizados
+
+Este proyecto aplica diversos patrones de diseño para mejorar la escalabilidad, mantenibilidad y claridad del código. La mayoría se encarga SpringBoot como el Singleton.
+
+### 🟢 Singleton
+Se utilizó para clases que deben tener una única instancia compartida, como servicios utilitarios o manejadores de configuración.
+
+> Ejemplo: `Servicios anotados con @Service, controladores con @RestController`
+
+---
+
+### 🧱 Builder
+Se aplicó para la construcción de objetos complejos de manera controlada, especialmente en DTOs o configuraciones con muchos parámetros opcionales.
+
+```java
+PuntoVenta puntoVenta = PuntoVenta.builder()
+        .id(1)
+        .puntoVenta("CABA")
+        .build();
+```
+
+## ⚡ Uso de Lombok
+
+Este proyecto utiliza [**Lombok**](https://projectlombok.org/) para reducir la verbosidad del código Java, generando automáticamente métodos comunes como getters, setters, constructores, `equals()`, `hashCode()` y más.
+
+### ✨ Anotaciones comunes utilizadas
+
+- `@Getter`, `@Setter` → Generan automáticamente los métodos de acceso.
+- `@Builder` → Facilita la creación de objetos con el patrón Builder.
+- `@AllArgsConstructor`, `@NoArgsConstructor` → Generan constructores.
+- `@Data` → Combina `@Getter`, `@Setter`, `@ToString`, `@EqualsAndHashCode`, y `@RequiredArgsConstructor`.
+- `@Value` → Marca la clase como inmutable.
+
+### 🔍 Ejemplo:
+
+```java
+@Data
+@AllArgsConstructor
+@Builder
+public class CaminoPK {
+
+    private PuntoVenta puntoA;
+    private PuntoVenta puntoB;
+
+}
+```
+
+🧼 Esto promueve un enfoque de código limpio, enfocado en la lógica y no en el boilerplate.
+
+### 📂 Estructura del proyecto
+
+![image](https://github.com/user-attachments/assets/1dc52c8e-eedd-4829-ac07-fb7654c318c0)
+ 
+---
+
+### 📘 Swagger UI
+
+_Interfaz para explorar y probar los endpoints disponibles:_  
+![image](https://github.com/user-attachments/assets/c4e2aa5f-b839-49bc-8535-f722cec4930a)
+![image](https://github.com/user-attachments/assets/0cb33a1c-5896-4139-82bf-2c68d9731a44)
+![image](https://github.com/user-attachments/assets/b3354ab7-14f8-4892-95d1-879d8faa947d)
+
+
+Accedé a la documentación en:  
+➡️ [`http://localhost:8080/swagger-ui.html`](http://localhost:8080/swagger-ui.html)
+
+---
+
+### ✅ Cobertura de tests
+
+![image](https://github.com/user-attachments/assets/adc47106-5ce5-40ec-9ae6-d5d5ceba3759)
+
+**msvc-acreditaciones si bien tiene un porcentaje bajo, se debe a metodos privados y/o configuracion de inicalizacion que no se pueden acceder desde testing.
+
+---
+
+## ⚙️ Requisitos
+
+- Tener instalado uno de los siguientes:
+  - 🐳 [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+  - 🧪 [Podman](https://podman.io/) (como alternativa a Docker)
+  
+> ⚠️ Si usás Podman, asegurate de tener habilitado el modo rootless o configurar `podman-docker` para que los comandos de Docker funcionen con Podman.
+
+- ☕ Java y 🧰 Maven (solo si querés correr la app sin contenedores)
+
+---
+
+## 🚀 Ejecutar en entorno de desarrollo
+
+1. **Clonar el repositorio**
+
+   ```bash
+   git clone https://github.com/DserafiniGiraudo/accenture-contents.git
+   ```
+2. **Navegar a la raiz del proyecto
+   ```
+   cd Challenge1
+   ```
+3. Levantar la aplicación
+   ```
+   ##con Docker
+   docker-compose up --build -d
+   ##con Podman
+   podman-compose up --build -d
+   ```
