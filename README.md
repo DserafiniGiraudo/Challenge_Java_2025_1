@@ -164,7 +164,30 @@ Accedé a la documentación en:
    ```
    cd Challenge1
    ```
-3. Levantar la aplicación
+3. **hacer una copia de ```env.template``` quitando el .template y cargandole los valores deseados ejemplo:
+    ```
+    #Entorno
+    ENVIRONMENT=dev
+    #Eureka
+    EUREKA_SERVER_PORT=8761
+    #Config Server
+    CONFIG_SERVER_PORT=8888
+    #Redis
+    REDIS_PORT=6379
+    #Microservicios
+    MSVC_PUNTOS_VENTAS_PORT=0
+    MSVC_PUNTOS_COSTOS_PORT=0
+    MSVC_ACREDITACIONES_PORT=0
+    GATEWAY_PORT=8080
+    
+    ##MySQL
+    MYSQL_PORT=3306
+    MYSQL_USER=aplicacionAcreditaciones
+    MYSQL_PASSWORD=1234
+    MYSQL_ROOT_PASSWORD=root
+    MYSQL_DATABASE=DBAcreditaciones
+    ```
+5. **Levantar la aplicación
    ```
    ##con Docker
    docker-compose up --build -d
