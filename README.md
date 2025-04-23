@@ -54,6 +54,25 @@ PuntoVenta puntoVenta = PuntoVenta.builder()
         .build();
 ```
 
+## 🧱 Patrones de Microservicios Utilizados
+
+Este proyecto adopta patrones arquitectónicos comunes en sistemas distribuidos para garantizar escalabilidad, disponibilidad y mantenimiento.
+
+### 🔍 Service Discovery
+Mediante **Spring Cloud Eureka**, cada microservicio se registra en un servidor central que actúa como "páginas amarillas", permitiendo la detección dinámica entre ellos.
+
+> 📌 Patrón aplicado: **Service Registry & Discovery**
+
+---
+
+### 🧭 Load Balancing
+Con la integración de **Spring Cloud LoadBalancer** (o mediante un Gateway), se reparten automáticamente las peticiones entre múltiples instancias de un mismo servicio.
+
+> 📌 Patrón aplicado: **Client-Side Load Balancing**
+
+---
+
+
 ## ⚡ Uso de Lombok
 
 Este proyecto utiliza [**Lombok**](https://projectlombok.org/) para reducir la verbosidad del código Java, generando automáticamente métodos comunes como getters, setters, constructores, `equals()`, `hashCode()` y más.
@@ -105,7 +124,7 @@ Accedé a la documentación en:
 
 ![image](https://github.com/user-attachments/assets/adc47106-5ce5-40ec-9ae6-d5d5ceba3759)
 
-
+**msvc-acreditaciones si bien tiene un porcentaje bajo, se debe a metodos privados y/o configuracion de inicalizacion que no se pueden acceder desde testing.
 
 ---
 
