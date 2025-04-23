@@ -72,6 +72,19 @@ Con la integración de **Spring Cloud LoadBalancer** (o mediante un Gateway), se
 
 ---
 
+### ⚡ Resiliencia (Circuit Breaker)
+
+Se implementó el patrón **Circuit Breaker** para proteger los microservicios ante fallos repetidos en dependencias externas. Esto evita que una falla en un servicio propague errores al resto del sistema.
+
+> 📌 Patrón aplicado: **Circuit Breaker (Resilience Pattern)**  
+> 🛠️ Implementado mediante: **Resilience4j**
+
+Cuando un servicio falla repetidamente:
+- El circuito **se abre** y se detienen temporalmente los llamados.
+- Luego, pasa a un estado **half-open** para verificar si el servicio se recuperó.
+- Si es exitoso, vuelve a estado **closed**.
+
+---
 
 ## ⚡ Uso de Lombok
 
