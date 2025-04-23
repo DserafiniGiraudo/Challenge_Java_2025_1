@@ -31,7 +31,9 @@ public class CaminoFinder {
             grafo.addEdge(puntoA, puntoB, camino);
             grafo.setEdgeWeight(camino, costo);
         }
-
+        if(grafo.vertexSet().isEmpty()) {
+            return null;
+        }
         DijkstraShortestPath<Integer, Camino> dijkstra = new DijkstraShortestPath<>(grafo);
         GraphPath<Integer, Camino> path = dijkstra.getPath(caminoPKRequest.getPuntoA().getId(),caminoPKRequest.getPuntoB().getId());
 
@@ -47,7 +49,4 @@ public class CaminoFinder {
                         .map(PuntoVenta::getPuntoVenta)
                         .toList());
     }
-
-    
-
 }
