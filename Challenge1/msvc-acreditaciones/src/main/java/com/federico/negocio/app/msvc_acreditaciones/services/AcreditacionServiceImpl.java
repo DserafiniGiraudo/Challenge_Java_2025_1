@@ -28,6 +28,9 @@ public class AcreditacionServiceImpl implements AcreditacionService {
     public AcreditacionResponse guardarAcreditacion(AcreditacionRequest acreditacionRequest) {
         
         String nombrePuntoventa = puntoVentaClient.findNameById(acreditacionRequest.identificadorPuntoVenta());
+        if(nombrePuntoventa == null) {
+            return null;
+        }
         Acreditacion acreditacion = mapper.toAcreditacion(acreditacionRequest);
         acreditacion.setIdentificadorPuntoVenta(acreditacionRequest.identificadorPuntoVenta());
         acreditacion.setNombrePuntoventa(nombrePuntoventa);

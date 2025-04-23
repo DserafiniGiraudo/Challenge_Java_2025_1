@@ -1,15 +1,16 @@
 package com.federico.negocio.app.msvc_puntos_costos.services;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClientRequestException;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 import com.federico.negocio.app.msvc_puntos_costos.domain.Camino;
@@ -21,7 +22,6 @@ import com.federico.negocio.app.msvc_puntos_costos.services.client.PuntoVentaCli
 import com.federico.negocio.libs.commons.libs_msvc_commons.domain.PuntoVenta;
 import com.federico.negocio.libs.commons.libs_msvc_commons.exception.*;
 
-import jakarta.ws.rs.InternalServerErrorException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -33,38 +33,40 @@ public class CostosServiceImpl implements CostosService {
     private final PuntoVentaClient puntoVentaClient;
     private final CaminoFinder caminoFinder;
 
-    private boolean initialized = false;
-
     private synchronized void init() {
 
-        if (!caminos.isEmpty() || initialized) {
+        if (!caminos.isEmpty()) {
             return;
         }
-        initialized = true;
         try {
-            List <PuntoVenta> puntosVentas = puntoVentaClient.findAll();
+            List<PuntoVenta> puntosVentas = puntoVentaClient.findAll();
             Map<Integer, PuntoVenta> mapaPuntos = puntosVentas
                     .stream()
                     .collect(Collectors.toMap(PuntoVenta::getId, Function.identity()));
-            List<Camino> caminosList = new ArrayList<>();
-    
-            caminosList.add(crearCamino(mapaPuntos, 1, 2, 2));
-            caminosList.add(crearCamino(mapaPuntos, 1, 3, 3));
-            caminosList.add(crearCamino(mapaPuntos, 2, 3, 5));
-            caminosList.add(crearCamino(mapaPuntos, 2, 4, 10));
-            caminosList.add(crearCamino(mapaPuntos, 1, 4, 11));
-            caminosList.add(crearCamino(mapaPuntos, 4, 5, 5));
-            caminosList.add(crearCamino(mapaPuntos, 2, 5, 10));
-            caminosList.add(crearCamino(mapaPuntos, 6, 7, 32));
-            caminosList.add(crearCamino(mapaPuntos, 8, 9, 11));
-            caminosList.add(crearCamino(mapaPuntos, 10, 7, 5));
-            caminosList.add(crearCamino(mapaPuntos, 3, 8, 10));
-            caminosList.add(crearCamino(mapaPuntos, 5, 8, 10));
-            caminosList.add(crearCamino(mapaPuntos, 10, 5, 5));
-            caminosList.add(crearCamino(mapaPuntos, 4, 6, 6));
-    
-            caminosList.forEach(c -> caminos.put(c.getCaminoPK(), c));
-            caminosList.forEach(c -> caminos.put(c.caminoInverso().getCaminoPK(), c.caminoInverso()));
+
+            if (!mapaPuntos.isEmpty()) {
+                List<Camino> caminosList = Arrays.asList(
+                    crearCamino(mapaPuntos, 1, 2, 2),
+                    crearCamino(mapaPuntos, 1, 3, 3),
+                    crearCamino(mapaPuntos, 2, 3, 5),
+                    crearCamino(mapaPuntos, 2, 4, 10),
+                    crearCamino(mapaPuntos, 1, 4, 11),
+                    crearCamino(mapaPuntos, 4, 5, 5),
+                    crearCamino(mapaPuntos, 2, 5, 10),
+                    crearCamino(mapaPuntos, 6, 7, 32),
+                    crearCamino(mapaPuntos, 8, 9, 11),
+                    crearCamino(mapaPuntos, 10, 7, 5),
+                    crearCamino(mapaPuntos, 3, 8, 10),
+                    crearCamino(mapaPuntos, 5, 8, 10),
+                    crearCamino(mapaPuntos, 10, 5, 5),
+                    crearCamino(mapaPuntos, 4, 6, 6)
+                );
+
+                caminosList.forEach(c -> {
+                    caminos.put(c.getCaminoPK(), c);
+                    caminos.put(c.caminoInverso().getCaminoPK(), c.caminoInverso());
+                });
+            }
         } catch (Exception e) {
             throw e;
         }
@@ -100,10 +102,11 @@ public class CostosServiceImpl implements CostosService {
             List<PuntoVenta> puntosVentaEncontrados = Arrays.asList(caminoPK.getPuntoA(), caminoPK.getPuntoB())
                     .stream()
                     .map(pv -> puntoVentaClient.findById(pv.getId()))
+                    .filter(Objects::nonNull)
                     .collect(Collectors.toList());
 
-                    if (puntosVentaEncontrados.isEmpty()) {
-                        throw new NotFoundException("Uno o ambos puntos de venta no existen");
+                    if (puntosVentaEncontrados.size() < 2) {
+                        return;
                     }
 
                    CaminoPK cpk = CaminoPK.builder()
@@ -118,11 +121,9 @@ public class CostosServiceImpl implements CostosService {
                     caminos.put(cpk, camino);
                     Camino caminoInverso = camino.caminoInverso();
                     caminos.put(caminoInverso.getCaminoPK(), caminoInverso);
-        } catch (WebClientResponseException e) {
+        } catch (WebClientResponseException | WebClientRequestException e) {
             throw e;
-        } catch (Exception e){
-            throw new InternalServerErrorException(String.format("Error al consumir msvc-puntos-ventas: %s", e.getMessage()));
-        }
+        } 
     }
 
     @Override
