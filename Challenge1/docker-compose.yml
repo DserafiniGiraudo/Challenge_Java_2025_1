@@ -42,6 +42,23 @@ services:
       timeout: 5s
       retries: 5
 
+  mongo:
+    container_name: mongo
+    image: mongo:latest
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+      - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
+    networks:
+      - challenge_network
+    volumes:
+      - mongo_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   msvc-puntos-ventas:
     container_name: msvc-puntos-ventas
     build:
@@ -78,7 +95,7 @@ services:
     networks:
       - challenge_network
     depends_on:
-      mysql:
+      mongo:
         condition: service_healthy
       msvc-puntos-ventas:
         condition: service_started

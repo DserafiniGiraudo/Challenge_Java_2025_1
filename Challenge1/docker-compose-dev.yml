@@ -6,9 +6,10 @@ services:
     ports:
       - 6379:6379
 
-  mysql:
+  mongo:
     ports:
-      - 3306:3306
+      - 27017:27017
+      
   msvc-puntos-ventas:
     ports:
       - 8010:8010
