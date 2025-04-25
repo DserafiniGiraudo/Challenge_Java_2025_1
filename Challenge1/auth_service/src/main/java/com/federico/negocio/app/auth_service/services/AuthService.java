@@ -12,6 +12,7 @@ import com.federico.negocio.app.auth_service.domain.User;
 import com.federico.negocio.app.auth_service.domain.dto.LoginRequest;
 import com.federico.negocio.app.auth_service.domain.dto.RegisterRequest;
 import com.federico.negocio.app.auth_service.domain.dto.TokenResponse;
+import com.federico.negocio.app.auth_service.exceptions.UserAlreadyExistsException;
 import com.federico.negocio.app.auth_service.repository.TokenRepository;
 import com.federico.negocio.app.auth_service.repository.UserRepository;
 import com.federico.negocio.libs.commons.libs_msvc_commons.exception.NotFoundException;
@@ -30,6 +31,10 @@ public class AuthService {
 
     public TokenResponse register(RegisterRequest  request){
         
+         userRepository.findByEmail(request.email())
+                .ifPresent(user -> {
+                    throw UserAlreadyExistsException.builder();
+                });
         var user = User.builder()
                 .name(request.name())
                 .email(request.email())
