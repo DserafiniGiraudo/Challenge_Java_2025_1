@@ -1,0 +1,36 @@
+server:
+  port: 8005
+  
+spring:
+  application:
+    name: auth_service
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/acreditaciones?createDatabaseIfNotExist=true
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  security:
+    user:
+      name: admin
+      password: admin
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+application:
+  security:
+    jwt:
+      secret-key: BAE385890A83972AFEE4F29E8186362E2C3B5AB9F578F33EC9A7C642F2F9A0DE
+      expiration: 3600
+      refresh-token:
+        expiration: 604800
+
