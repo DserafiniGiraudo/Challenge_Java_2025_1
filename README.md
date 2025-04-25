@@ -1,13 +1,13 @@
 # 🧠 Challenge_Java_2025_1
 
-> Proyecto desarrollado con Java y Spring Boot, dockerizado y con test coverage superior al 70%.  
+> Proyecto desarrollado con Java y Spring Boot, dockerizado y con test coverage.  
 > Permite la ejecución local mediante Docker y expone una API documentada con Swagger.
 
 ---
 
 ## 📦 Tecnologías Utilizadas
 
-- ⚙️ **Java 17**
+- ⚙️ **Java 21**
 - 🌱 **Spring Boot**
 - 🐳 **Docker / Docker Compose**
 - ✅ **JUnit y Mockito para testing**
@@ -17,22 +17,25 @@
 - 🐬 **MySQL** – Base de datos relacional
 ---
 
-## ☕️ Características de Java 17
+## ☕️ Características de Java 21
 
-Este proyecto utiliza **Java 17**, lo que nos permite aprovechar nuevas funcionalidades del lenguaje que mejoran la legibilidad, mantenibilidad y seguridad del código.
+Este proyecto utiliza **Java 21**, lo que nos permite aprovechar nuevas funcionalidades del lenguaje que mejoran la legibilidad, mantenibilidad y seguridad del código.
 
-### 🔹 `record` para clases inmutables
+### 🔹 `record` para clases inmutables: Código más conciso y legible
 
-Simplificamos clases que sólo representan datos como requests/responses utilizando `record`, lo cual reduce el boilerplate automáticamente:
+Desde la adopción de Java 16, mediante records busco reducir significativamente la cantidad de código boilerplate necesario para definir Data Transfer Objects (DTOs), entidades o estructuras de datos simples, lo que resulta en un código más limpio, legible y fácil de mantener.
+
+Por ejemplo, nuestra clase `AcreditacionResponse` se define de manera simple y directa:
 
 ```java
 public record AcreditacionResponse(
-    String id,
-    int identificadorPuntoVenta,
-    String nombrePuntoventa,
-    double importe,
-    LocalDate fechaPedido) {}
+    String id,
+    int identificadorPuntoVenta,
+    String nombrePuntoventa,
+    double importe,
+    LocalDate fechaPedido) {}
 ```
+
 ## 🧩 Patrones de diseño utilizados
 
 Este proyecto aplica diversos patrones de diseño para mejorar la escalabilidad, mantenibilidad y claridad del código. La mayoría se encarga SpringBoot como el Singleton.
