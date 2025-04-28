@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import static org.springframework.security.config.http.SessionCreationPolicy.*;
 
+import org.apache.catalina.authenticator.Constants;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -22,6 +23,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.federico.negocio.app.auth_service.domain.Token;
 import com.federico.negocio.app.auth_service.domain.User;
+import com.federico.negocio.app.auth_service.exceptions.ConstantsExceptions;
 import com.federico.negocio.app.auth_service.repository.TokenRepository;
 import com.federico.negocio.app.auth_service.repository.UserRepository;
 import com.federico.negocio.libs.commons.libs_msvc_commons.exception.NotFoundException;
@@ -71,7 +73,7 @@ public class AppConfig {
     UserDetailsService userDetailsService() {
         return email -> {
             final User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> NotFoundException.build("User not found"));
+                .orElseThrow(() -> NotFoundException.build(ConstantsExceptions.NOT_FOUND));
             return org.springframework.security.core.userdetails.User.builder()
                 .username(user.getEmail())
                 .password(user.getPassword())

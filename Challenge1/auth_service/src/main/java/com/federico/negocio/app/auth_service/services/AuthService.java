@@ -59,7 +59,7 @@ public class AuthService {
                 ));
                 
         var user = userRepository.findByEmail(request.email())
-                .orElseThrow(() -> NotFoundException.build("User not found"));
+                .orElseThrow(() -> NotFoundException.build(ConstantsExceptions.NOT_FOUND));
         
         var jwtToken = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
@@ -94,7 +94,7 @@ public class AuthService {
 
     public TokenResponse refresh(String authheader) {
         if (authheader == null || !authheader.startsWith("Bearer ")) {
-            throw new IllegalArgumentException("Invalid Bearer token");
+            throw new IllegalArgumentException(ConstantsExceptions.INVALID_CREDENTIALS);
         }
 
         final String refreshToken = authheader.substring(7);
@@ -102,14 +102,14 @@ public class AuthService {
 
 
         if(userEmail == null) {
-            throw new IllegalArgumentException("Invalid refresh token");
+            throw new IllegalArgumentException(ConstantsExceptions.INVALID_CREDENTIALS);
         }
 
         final User user = userRepository.findByEmail(userEmail)
-                .orElseThrow(() ->  NotFoundException.build(ConstantsExceptions.USERNAME_NOT_FOUND));
+                .orElseThrow(() ->  NotFoundException.build(ConstantsExceptions.NOT_FOUND));
         
         if(!jwtService.isTokenValid(refreshToken, user)) {
-            throw new IllegalArgumentException("Invalid refresh token");
+            throw new IllegalArgumentException(ConstantsExceptions.INVALID_CREDENTIALS);
         }
 
         final String accessToken = jwtService.generateToken(user);

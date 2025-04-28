@@ -100,6 +100,21 @@ services:
       msvc-puntos-ventas:
         condition: service_started
 
+  msvc-auth:
+    container_name: msvc-auth
+    build:
+      context: .
+      dockerfile: msvc-auth/Dockerfile
+    networks:
+      - challenge_network
+    env_file:
+      - .env
+    depends_on:
+      redis:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
+
   gateway:
     container_name: gateway
     build:

@@ -12,21 +12,22 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
+
 @RestControllerAdvice
 public class SecurityExceptionHandler {
 
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<Map<String, String>> handleAuthenticationException(AuthenticationException ex) {
-        return ErrorResponseFactory.createErrorResponse(UNAUTHORIZED, ex.getMessage() != null ? ex.getMessage() : "Error de autenticación.");
+        return ErrorResponseFactory.createErrorResponse(UNAUTHORIZED, ex.getMessage() != null ? ex.getMessage() : ConstantsExceptions.AUTHENTICATION_EXCEPTION);
     }
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<Map<String, String>> handleBadCredentialsException(BadCredentialsException ex) {
-        return ErrorResponseFactory.createErrorResponse(UNAUTHORIZED, ex.getMessage() != null ? ex.getMessage() : "Error de autenticación.");
+        return ErrorResponseFactory.createErrorResponse(UNAUTHORIZED, ex.getMessage() != null ? ex.getMessage() : ConstantsExceptions.AUTHENTICATION_EXCEPTION);
     }
 
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<Map<String, String>> handleAccessDeniedException(AccessDeniedException ex) {
-        return ErrorResponseFactory.createErrorResponse(FORBIDDEN, ex.getMessage() != null ? ex.getMessage() : "Acceso denegado.");
+        return ErrorResponseFactory.createErrorResponse(FORBIDDEN, ex.getMessage() != null ? ex.getMessage() : ConstantsExceptions.AUTHENTICATION_EXCEPTION);
     }
 
     @ExceptionHandler(UserAlreadyExistsException.class)

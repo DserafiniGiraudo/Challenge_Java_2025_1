@@ -2,6 +2,7 @@ package com.federico.negocio.app.auth_service.controller;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -28,20 +29,20 @@ public class AuthController {
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public TokenResponse postMethodName(@RequestBody final RegisterRequest registerRequest) {
-        return authService.register(registerRequest);
+    public ResponseEntity<TokenResponse> postMethodName(@RequestBody final RegisterRequest registerRequest) {
+        return ResponseEntity.ok(authService.register(registerRequest));
     }
 
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
-    public TokenResponse login(@RequestBody final LoginRequest loginRequest) {
-        return authService.login(loginRequest);
+    public ResponseEntity<TokenResponse> login(@RequestBody final LoginRequest loginRequest) {
+        return ResponseEntity.ok(authService.login(loginRequest));
     }
     
 
     @PostMapping("/refresh")
     @ResponseStatus(HttpStatus.OK)
-    public TokenResponse refresh(@RequestHeader(HttpHeaders.AUTHORIZATION) final String authheader) {
-        return authService.refresh(authheader);
+    public ResponseEntity<TokenResponse> refresh(@RequestHeader(HttpHeaders.AUTHORIZATION) final String authheader) {
+        return ResponseEntity.ok(authService.refresh(authheader));
     }
 }
