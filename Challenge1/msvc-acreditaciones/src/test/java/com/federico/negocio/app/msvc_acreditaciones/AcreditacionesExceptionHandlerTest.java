@@ -32,7 +32,7 @@ class AcreditacionesExceptionHandlerTest {
     @DisplayName("handleNotFoundException - Debe retornar un error 404 cuando no se encuentra el recurso")
     void handleNotFoundException() {
         
-        when(repo.findById(anyString())).thenThrow(new NotFoundException("Acreditacion no encontrada con el id  " + "1"));
+        when(repo.findById(anyString())).thenThrow( NotFoundException.build("Acreditacion no encontrada con el id  " + "1"));
         assertThrows(NotFoundException.class, () -> {
             acreditacionService.getAcreditacionById("1");
         });

@@ -132,7 +132,7 @@ public class CostosServiceImpl implements CostosService {
                 .noneMatch(cpk -> 
                 (cpk.getPuntoA().equals(caminoRequest.getPuntoA()) && cpk.getPuntoB().equals(caminoRequest.getPuntoB())) ||
                 (cpk.getPuntoA().equals(caminoRequest.getPuntoB()) && cpk.getPuntoB().equals(caminoRequest.getPuntoA())))) {
-            throw new NotFoundException("El camino no existe");
+            throw NotFoundException.build("El camino no existe");
         }
         CaminoPK caminoPK = CaminoPK.builder()
             .puntoA(caminoRequest.getPuntoA())

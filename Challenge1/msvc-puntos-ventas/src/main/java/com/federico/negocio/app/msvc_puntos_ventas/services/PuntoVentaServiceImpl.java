@@ -80,7 +80,7 @@ public class PuntoVentaServiceImpl implements PuntoVentaService {
     public PuntoVenta findById(int id) {
         return puntoVentaDao
                 .findById(id)
-                .orElseThrow(() -> new NotFoundException("PuntoVenta no encontrado con ID: " + id));
+                .orElseThrow(() -> NotFoundException.build("PuntoVenta no encontrado con ID: " + id));
     }
 
     @Override
@@ -106,7 +106,7 @@ public class PuntoVentaServiceImpl implements PuntoVentaService {
                     existingPuntoVenta.setPuntoVenta(puntoVenta.puntoVenta());
                     return puntoVentaDao.save(existingPuntoVenta);
                 })
-                .orElseThrow(() -> new NotFoundException("PuntoVenta no encontrado con ID: " + id));
+                .orElseThrow(() -> NotFoundException.build("PuntoVenta no encontrado con ID: " + id));
     }
 
     @Override
@@ -125,6 +125,6 @@ public class PuntoVentaServiceImpl implements PuntoVentaService {
         return puntoVentaDao
                 .findById(id)
                 .map(PuntoVenta::getPuntoVenta)
-                .orElseThrow(() -> new NotFoundException("PuntoVenta no encontrado con ID: " + id));
+                .orElseThrow(() -> NotFoundException.build("PuntoVenta no encontrado con ID: " + id));
     }
 }

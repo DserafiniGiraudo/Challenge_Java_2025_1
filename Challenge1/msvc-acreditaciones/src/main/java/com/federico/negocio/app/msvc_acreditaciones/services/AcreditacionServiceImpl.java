@@ -44,6 +44,6 @@ public class AcreditacionServiceImpl implements AcreditacionService {
 
         return repo.findById(id)
                 .map(mapper::toAcreditacionResponse)
-                .orElseThrow(() -> new NotFoundException("Acreditacion no encontrada con el id  " + id));
+                .orElseThrow(() -> NotFoundException.build("Acreditacion no encontrada con el id  " + id));
     }
 }

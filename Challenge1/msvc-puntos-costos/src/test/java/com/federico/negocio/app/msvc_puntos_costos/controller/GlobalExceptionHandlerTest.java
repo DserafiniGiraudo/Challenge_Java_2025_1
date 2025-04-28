@@ -66,7 +66,7 @@ class GlobalExceptionHandlerTest {
                 .puntoB(new PuntoVenta(2, "PV2"))
                 .build();
 
-        doThrow(new NotFoundException("El camino no existe"))
+        doThrow(NotFoundException.build("El camino no existe"))
                 .when(service).removerCosto(any());
 
         mockMvc.perform(delete("/costos")

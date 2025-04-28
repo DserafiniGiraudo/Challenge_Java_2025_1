@@ -38,7 +38,7 @@ public class CaminoFinder {
         GraphPath<Integer, Camino> path = dijkstra.getPath(caminoPKRequest.getPuntoA().getId(),caminoPKRequest.getPuntoB().getId());
 
         if (path == null) 
-            throw new NotFoundException("No se encontró posible para ir de " + caminoPKRequest.getPuntoA().getId() + " a " + caminoPKRequest.getPuntoB().getId());
+            throw NotFoundException.build("No se encontró posible para ir de " + caminoPKRequest.getPuntoA().getId() + " a " + caminoPKRequest.getPuntoB().getId());
 
         return new ResultadoCamino(
                 (int) path.getWeight(),

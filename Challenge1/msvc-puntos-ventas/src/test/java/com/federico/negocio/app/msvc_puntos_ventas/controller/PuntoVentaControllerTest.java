@@ -115,7 +115,7 @@ public class PuntoVentaControllerTest {
     @Test
     @DisplayName("GET /puntosVentas/{id} - Debe retornar Not Found si el punto de venta no existe")
     void testFindById_NonExistingId() throws Exception {
-        when(service.findById(3)).thenThrow(new NotFoundException("PuntoVenta no encontrado con ID: 3"));
+        when(service.findById(3)).thenThrow(NotFoundException.build("PuntoVenta no encontrado con ID: 3"));
 
         mockMvc.perform(get("/puntosVentas/3"))
                 .andExpect(status().isNotFound())
@@ -139,7 +139,7 @@ public class PuntoVentaControllerTest {
     @Test
     @DisplayName("GET /puntosVentas/nombres/{id} - Debe retornar Not Found si no existe")
     void testFindNameById_nonExistingId() throws Exception {
-        when(service.findNameById(3)).thenThrow(new NotFoundException("PuntoVenta no encontrado con ID: 3"));
+        when(service.findNameById(3)).thenThrow(NotFoundException.build("PuntoVenta no encontrado con ID: 3"));
 
         mockMvc.perform(get("/puntosVentas/nombres/3"))
                 .andExpect(status().isNotFound())
@@ -179,7 +179,7 @@ public class PuntoVentaControllerTest {
     @Test
     @DisplayName("PUT /puntosVentas/{id} - Debe retornar Not Found si el punto de venta a actualizar no existe")
     void testUpdate_nonExistingId() throws Exception {
-        when(service.update(puntoVentaRequest, 3)).thenThrow(new NotFoundException("PuntoVenta no encontrado con ID: 3"));
+        when(service.update(puntoVentaRequest, 3)).thenThrow(NotFoundException.build("PuntoVenta no encontrado con ID: 3"));
         mockMvc.perform(put("/puntosVentas/3")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(puntoVentaRequest)))

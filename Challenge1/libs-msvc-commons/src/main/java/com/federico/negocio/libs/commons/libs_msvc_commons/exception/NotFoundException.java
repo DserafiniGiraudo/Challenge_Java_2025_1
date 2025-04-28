@@ -9,7 +9,7 @@ public class NotFoundException extends ConflictException{
 
     private static final long serialVersionUID = 198616516551L;
 
-    public NotFoundException(String message) {
+    private NotFoundException(String message) {
         super(message);
     }
 

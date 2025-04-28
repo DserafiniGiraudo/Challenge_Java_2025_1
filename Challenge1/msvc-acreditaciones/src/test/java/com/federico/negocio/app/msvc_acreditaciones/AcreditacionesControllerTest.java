@@ -69,7 +69,7 @@ class AcreditacionesControllerTest {
     void testGetAcreditacionByIdNotFound() {
         String id = "1";
 
-        when(service.getAcreditacionById(id)).thenThrow(new NotFoundException("Acreditacion no encontrada"));
+        when(service.getAcreditacionById(id)).thenThrow( NotFoundException.build("Acreditacion no encontrada"));
 
         NotFoundException thrown = assertThrows(NotFoundException.class, () -> {
             controller.getAcreditacionById(id);
