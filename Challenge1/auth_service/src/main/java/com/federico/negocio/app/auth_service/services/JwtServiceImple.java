@@ -32,8 +32,37 @@ public class JwtServiceImple implements JwtService {
        return buildToken(user, refreshTokenExpiration);
     }
 
-    private String buildToken(final User user, final long expiration) {
-       
+    @Override
+    public String extractUsername(String token) {
+         return Jwts.parser()
+                  .verifyWith(getSignInKey())
+                  .build()
+                  .parseSignedClaims(token)
+                  .getPayload()
+                  .getSubject();
+    }
+
+    @Override
+    public boolean isTokenValid(String refreshToken, User user) {
+         final String username = extractUsername(refreshToken);
+         return (username.equals(user.getEmail()) && !isTokenExpired(refreshToken));
+    }
+   
+         
+   private boolean isTokenExpired(String token) {
+      return extractExpiration(token).before(new Date());
+   }
+               
+   private Date extractExpiration(String token) {
+      return Jwts.parser()
+               .verifyWith(getSignInKey())
+               .build()
+               .parseSignedClaims(token)
+               .getPayload()
+               .getExpiration();
+   }
+      
+   private String buildToken(final User user, final long expiration) {
        return Jwts.builder()
                 .id(Long.toString(expiration))
                 .claims(Map.of("name",user.getName()))
@@ -42,7 +71,6 @@ public class JwtServiceImple implements JwtService {
                 .expiration(new Date(System.currentTimeMillis()  + expiration))
                 .signWith(getSignInKey())
                 .compact();
-                
     }
 
     private SecretKey getSignInKey() {

@@ -12,6 +12,7 @@ import com.federico.negocio.app.auth_service.domain.User;
 import com.federico.negocio.app.auth_service.domain.dto.LoginRequest;
 import com.federico.negocio.app.auth_service.domain.dto.RegisterRequest;
 import com.federico.negocio.app.auth_service.domain.dto.TokenResponse;
+import com.federico.negocio.app.auth_service.exceptions.ConstantsExceptions;
 import com.federico.negocio.app.auth_service.exceptions.UserAlreadyExistsException;
 import com.federico.negocio.app.auth_service.repository.TokenRepository;
 import com.federico.negocio.app.auth_service.repository.UserRepository;
@@ -58,7 +59,7 @@ public class AuthService {
                 ));
                 
         var user = userRepository.findByEmail(request.email())
-                .orElseThrow(() -> new NotFoundException("User not found"));
+                .orElseThrow(() -> NotFoundException.build("User not found"));
         
         var jwtToken = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
@@ -92,6 +93,28 @@ public class AuthService {
 
 
     public TokenResponse refresh(String authheader) {
-        return null;
+        if (authheader == null || !authheader.startsWith("Bearer ")) {
+            throw new IllegalArgumentException("Invalid Bearer token");
+        }
+
+        final String refreshToken = authheader.substring(7);
+        final String userEmail = jwtService.extractUsername(refreshToken);
+
+
+        if(userEmail == null) {
+            throw new IllegalArgumentException("Invalid refresh token");
+        }
+
+        final User user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() ->  NotFoundException.build(ConstantsExceptions.USERNAME_NOT_FOUND));
+        
+        if(!jwtService.isTokenValid(refreshToken, user)) {
+            throw new IllegalArgumentException("Invalid refresh token");
+        }
+
+        final String accessToken = jwtService.generateToken(user);
+        revokeAllUserTokens(user);
+        saveUserToken(user, accessToken);
+        return new TokenResponse(accessToken, refreshToken);
     }
 }
