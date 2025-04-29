@@ -71,3 +71,8 @@ springdoc:
         url: /msvc-puntos-costos/v3/api-docs
       - name: Acreditaciones
         url: /msvc-acreditaciones/v3/api-docs
+
+application:
+  security:
+    jwt:
+      secret-key: ${JWT_SECRET_KEY}
