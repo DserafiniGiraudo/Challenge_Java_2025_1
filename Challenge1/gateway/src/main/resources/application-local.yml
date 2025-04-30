@@ -23,7 +23,6 @@ spring:
                   - Path=/api/v1/puntosVentas/**
                 filters:
                   - StripPrefix=2 
-                  - AuthenticationFilter
               - id: puntos-costos-route
                 uri: lb://msvc-puntos-costos
                 predicates:
@@ -55,13 +54,10 @@ spring:
                   - Path=/msvc-acreditaciones/v3/api-docs
                 filters:
                   - RewritePath=/msvc-acreditaciones/v3/api-docs, /v3/api-docs
-                  
-    datasource:
-      url: jdbc:mysql://localhost:3306/DBAcreditaciones?createDatabaseIfNotExist=true
-      username: root
-      password: root
-      driver-class-name: com.mysql.cj.jdbc.Driver
-
+                
+    main:
+      allow-bean-definition-overriding: true
+      web-application-type: reactive
 eureka:
   client:
     service-url:
