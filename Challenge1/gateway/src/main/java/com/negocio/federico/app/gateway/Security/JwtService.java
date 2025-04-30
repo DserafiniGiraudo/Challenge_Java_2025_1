@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 @Component
 public class JwtService {
 
-    private static final Logger log = LoggerFactory.getLogger(JwtService.class);
 
     @Value("${application.security.jwt.secret-key}")
     private String secretKey;
@@ -29,11 +28,10 @@ public class JwtService {
     }
 
     public Collection<SimpleGrantedAuthority> getAuthoritiesFromToken(String token) {
-        Claims claims = getClaims(token);
+        Claims claims = getClaims(token);    
         List<String> roles = claims.get("roles", List.class);
         
         if (roles == null) {
-            log.warn("No se encontraron roles en el token");
             return Collections.emptyList();
         }
         
@@ -47,7 +45,6 @@ public class JwtService {
             getClaims(token);
             return true;
         } catch (Exception e) {
-            log.error("Error al validar token: {}", e.getMessage());
             return false;
         }
     }
