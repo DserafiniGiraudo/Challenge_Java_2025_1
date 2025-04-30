@@ -15,7 +15,7 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
 @Service
-public class JwtServiceImple implements JwtService {
+public class JwtServiceImpl implements JwtService {
 
     @Value("${application.security.jwt.secret-key}")
     private String secretKey;
@@ -64,7 +64,6 @@ public class JwtServiceImple implements JwtService {
       
    private String buildToken(final User user, final long expiration) {
        return Jwts.builder()
-                .id(Long.toString(expiration))
                 .claims(Map.of("name",user.getName()))
                 .subject(user.getEmail())
                 .issuedAt(new Date(System.currentTimeMillis()))

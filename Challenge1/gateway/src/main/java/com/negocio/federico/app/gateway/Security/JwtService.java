@@ -24,21 +24,10 @@ public class JwtService {
     @Value("${application.security.jwt.secret-key}")
     private String secretKey;
 
-    /**
-     * Extrae el nombre de usuario del token
-     * @param token JWT token
-     * @return nombre de usuario
-     */
     public String getUsernameFromToken(String token) {
         return getClaims(token).getSubject();
     }
 
-    /**
-     * Extrae los roles del token y los convierte en SimpleGrantedAuthority
-     * @param token JWT token
-     * @return Colección de authorities
-     */
-    @SuppressWarnings("unchecked")
     public Collection<SimpleGrantedAuthority> getAuthoritiesFromToken(String token) {
         Claims claims = getClaims(token);
         List<String> roles = claims.get("roles", List.class);
@@ -53,11 +42,6 @@ public class JwtService {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Valida si el token es válido
-     * @param token JWT token
-     * @return true si es válido, false en caso contrario
-     */
     public boolean validateToken(String token) {
         try {
             getClaims(token);
@@ -68,11 +52,6 @@ public class JwtService {
         }
     }
 
-    /**
-     * Obtiene las claims del token
-     * @param token JWT token
-     * @return Claims del token
-     */
     private Claims getClaims(String token) {
         return Jwts.parser()
                 .verifyWith(getSignInKey())
@@ -81,10 +60,6 @@ public class JwtService {
                 .getPayload();
     }
 
-    /**
-     * Obtiene la clave de firma del token
-     * @return SecretKey
-     */
     private SecretKey getSignInKey() {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);

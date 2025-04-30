@@ -13,6 +13,7 @@ import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 
+import io.jsonwebtoken.lang.Collections;
 import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Mono;
 
@@ -71,17 +72,12 @@ public class JwtAuthenticationFilter implements WebFilter {
             
             // Extraer información del token
             String username = jwtService.getUsernameFromToken(token);
-            Collection<SimpleGrantedAuthority> authorities = jwtService.getAuthoritiesFromToken(token);
-            
-            log.debug("Usuario autenticado: {} con roles: {}", username, authorities);
-            
             // // Crear objeto de autenticación
-            // UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
-            //         username, null, authorities);
+            UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(username, null, Collections.emptyList());
             
             // Propagar autenticación al contexto de seguridad y continuar con la cadena de filtros
-            return chain.filter(exchange);
-            // return chain.filter(exchange).contextWrite(ReactiveSecurityContextHolder.withAuthentication(auth));
+            // return chain.filter(exchange);
+            return chain.filter(exchange).contextWrite(ReactiveSecurityContextHolder.withAuthentication(auth));
             
         } catch (Exception e) {
             log.error("Error al procesar token JWT: {}", e.getMessage());

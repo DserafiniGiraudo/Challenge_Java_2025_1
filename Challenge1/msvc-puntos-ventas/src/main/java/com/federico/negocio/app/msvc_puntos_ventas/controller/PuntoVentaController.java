@@ -36,6 +36,7 @@ public class PuntoVentaController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
+
     public PuntoVenta findById(@PathVariable int id){
        return service.findById(id);
     }

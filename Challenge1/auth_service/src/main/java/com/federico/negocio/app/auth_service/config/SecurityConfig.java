@@ -46,7 +46,7 @@ public class SecurityConfig {
             .httpBasic(c  -> c.disable())
             .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
             .authenticationProvider(authenticationProvider)
-            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+            // .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
             .logout(logout->
                 logout.logoutUrl("/auth/logout")
                 .addLogoutHandler((request, response, authentication) -> {
