@@ -6,48 +6,61 @@ spring:
         name: gateway
 
     cloud:
-        gateway:
-            discovery:
-              locator:
-                enabled: true
-            routes:
-                - id: puntos-ventas-route
-                  uri: lb://msvc-puntos-ventas
-                  predicates:
-                    - Path=/api/v1/puntosVentas/**
-                  filters:
-                    - StripPrefix=2 
-                - id: puntos-costos-route
-                  uri: lb://msvc-puntos-costos
-                  predicates:
-                    - Path=/api/v1/costos/**
-                  filters:
-                    - StripPrefix=2
-                - id: acreditaciones-route
-                  uri: lb://msvc-acreditaciones
-                  predicates:
-                    - Path=/api/v1/acreditaciones/**
-                  filters:
-                    - StripPrefix=2
+      gateway:
+          discovery:
+            locator:
+              enabled: true
+          routes:
+              - id: auth-service-route
+                uri: lb://auth-service
+                predicates:
+                  - Path=/api/v1/auth/**
+                filters:
+                  - StripPrefix=2
+              - id: puntos-ventas-route
+                uri: lb://msvc-puntos-ventas
+                predicates:
+                  - Path=/api/v1/puntosVentas/**
+                filters:
+                  - StripPrefix=2 
+                  - AuthenticationFilter
+              - id: puntos-costos-route
+                uri: lb://msvc-puntos-costos
+                predicates:
+                  - Path=/api/v1/costos/**
+                filters:
+                  - StripPrefix=2
+              - id: acreditaciones-route
+                uri: lb://msvc-acreditaciones
+                predicates:
+                  - Path=/api/v1/acreditaciones/**
+                filters:
+                  - StripPrefix=2
 
-                - id: puntos-ventas-swagger
-                  uri: lb://msvc-puntos-ventas
-                  predicates:
-                    - Path=/msvc-puntos-ventas/v3/api-docs
-                  filters:
-                    - RewritePath=/msvc-puntos-ventas/v3/api-docs, /v3/api-docs
-                - id: puntos-costos-swagger
-                  uri: lb://msvc-puntos-costos
-                  predicates:
-                    - Path=/msvc-puntos-costos/v3/api-docs
-                  filters:
-                  - RewritePath=/msvc-puntos-costos/v3/api-docs, /v3/api-docs
-                - id: acreditaciones-swagger
-                  uri: lb://msvc-acreditaciones
-                  predicates:
-                    - Path=/msvc-acreditaciones/v3/api-docs
-                  filters:
-                    - RewritePath=/msvc-acreditaciones/v3/api-docs, /v3/api-docs
+              - id: puntos-ventas-swagger
+                uri: lb://msvc-puntos-ventas
+                predicates:
+                  - Path=/msvc-puntos-ventas/v3/api-docs
+                filters:
+                  - RewritePath=/msvc-puntos-ventas/v3/api-docs, /v3/api-docs
+              - id: puntos-costos-swagger
+                uri: lb://msvc-puntos-costos
+                predicates:
+                  - Path=/msvc-puntos-costos/v3/api-docs
+                filters:
+                - RewritePath=/msvc-puntos-costos/v3/api-docs, /v3/api-docs
+              - id: acreditaciones-swagger
+                uri: lb://msvc-acreditaciones
+                predicates:
+                  - Path=/msvc-acreditaciones/v3/api-docs
+                filters:
+                  - RewritePath=/msvc-acreditaciones/v3/api-docs, /v3/api-docs
+                  
+    datasource:
+      url: jdbc:mysql://localhost:3306/DBAcreditaciones?createDatabaseIfNotExist=true
+      username: root
+      password: root
+      driver-class-name: com.mysql.cj.jdbc.Driver
 
 eureka:
   client:
@@ -65,3 +78,8 @@ springdoc:
         url: /msvc-puntos-costos/v3/api-docs
       - name: Acreditaciones
         url: /msvc-acreditaciones/v3/api-docs
+
+application:
+  security:
+    jwt:
+      secret-key: BAE385890A83972AFEE4F29E8186362E2C3B5AB9F578F33EC9A7C642F2F9A0DE

@@ -39,7 +39,7 @@ spring:
                 - id: puntos-ventas-swagger
                   uri: lb://msvc-puntos-ventas
                   predicates:
-                    - Path=/msvc-puntos-ventas/v3/api-docs
+                    - Path="/msvc-puntos-ventas/v3/api-docs"
                   filters:
                     - RewritePath=/msvc-puntos-ventas/v3/api-docs, /v3/api-docs
                 - id: puntos-costos-swagger
@@ -54,6 +54,12 @@ spring:
                     - Path=/msvc-acreditaciones/v3/api-docs
                   filters:
                     - RewritePath=/msvc-acreditaciones/v3/api-docs, /v3/api-docs
+
+    datasource:
+      url: jdbc:mysql://mysql:3306/${MYSQL_DATABASE}?createDatabaseIfNotExist=true
+      username: ${MYSQL_USER}
+      password: ${MYSQL_PASSWORD}
+      driver-class-name: com.mysql.cj.jdbc.Driver
 
 eureka:
   client:
