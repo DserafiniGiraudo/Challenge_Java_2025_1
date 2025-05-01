@@ -1,6 +1,7 @@
 package com.federico.negocio.app.auth_service.config;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Optional;
 
 import org.springframework.http.HttpHeaders;
@@ -36,7 +37,9 @@ public class JwtAuthFilter extends OncePerRequestFilter{
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filter) throws ServletException, IOException {
-        if(request.getServletPath().contains("/auth")) {
+        String path =  request.getServletPath();
+
+        if (isPublicPath(path) || isSwaggerPath(path)) {
             filter.doFilter(request, response);
             return;
         }
@@ -50,7 +53,7 @@ public class JwtAuthFilter extends OncePerRequestFilter{
         final String userEmail = jwtService.extractUsername(jwtToken);
 
         final Token token = tokenRepository.findByToken(jwtToken).orElse(null);
-        if(token != null || token.isExpired() || token.isRevoked()){
+        if(token == null || token.isExpired() || token.isRevoked()){
             filter.doFilter(request, response);
             return;
         }
@@ -76,5 +79,28 @@ public class JwtAuthFilter extends OncePerRequestFilter{
         authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         SecurityContextHolder.getContext().setAuthentication(authToken);
         filter.doFilter(request, response);
+    }
+
+    private boolean isPublicPath(String path) {
+        return Arrays.stream(SecurityConfig.PUBLIC_URLS)
+            .anyMatch(pattern -> pathMatches(path, pattern));
+    }
+    
+    private boolean isSwaggerPath(String path) {
+        return Arrays.stream(SecurityConfig.SWAGGER_URLS)
+        .anyMatch(pattern -> pathMatches(path, pattern));
+    }
+
+    private boolean pathMatches(String path, String pattern) {
+        // Convierte el patrón a una expresión regular
+        if (pattern.endsWith("/*")) {
+            String basePath = pattern.substring(0, pattern.length() - 1);
+            return path.startsWith(basePath);
+        } else if (pattern.endsWith("/**")) {
+            String basePath = pattern.substring(0, pattern.length() - 2);
+            return path.startsWith(basePath);
+        } else {
+            return path.equals(pattern);
+        }
     }
 }

@@ -42,6 +42,8 @@ public class SecurityConfig {
         "/msvc-puntos-ventas/v3/api-docs",
         "/msvc-puntos-costos/v3/api-docs",
         "/msvc-acreditaciones/v3/api-docs",
+        "/auth/v3/api-docs",
+        "/auth/v3/api-docs/**",
         "/v3/api-docs/**",  
         "/swagger-ui.html",
         "/webjars/**",

@@ -36,6 +36,12 @@ spring:
                 filters:
                   - StripPrefix=2
 
+              - id: auth-service-swagger
+                uri: lb://auth-service
+                predicates:
+                  - Path=/auth/v3/api-docs
+                filters:
+                  - RewritePath=/auth/v3/api-docs, /v3/api-docs
               - id: puntos-ventas-swagger
                 uri: lb://msvc-puntos-ventas
                 predicates:
@@ -74,6 +80,8 @@ springdoc:
         url: /msvc-puntos-costos/v3/api-docs
       - name: Acreditaciones
         url: /msvc-acreditaciones/v3/api-docs
+      - name: Auth Service
+        url: /auth/v3/api-docs
 
 application:
   security:

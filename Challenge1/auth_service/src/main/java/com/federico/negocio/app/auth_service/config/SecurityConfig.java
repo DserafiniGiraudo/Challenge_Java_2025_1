@@ -11,7 +11,13 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.reactive.CorsWebFilter;
+import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
+
 import static org.springframework.security.config.http.SessionCreationPolicy.*;
+
+import java.util.Arrays;
 
 import com.federico.negocio.libs.commons.libs_msvc_commons.exception.NotFoundException;
 import com.federico.negocio.app.auth_service.domain.Token;
@@ -29,10 +35,18 @@ public class SecurityConfig {
     private final JwtAuthFilter jwtAuthFilter;
     private final TokenRepository tokenRepository;
 
-    private static final String[] PUBLIC_URLS = {
+    public static final String[] PUBLIC_URLS = {
         "/auth/register",
         "/auth/login",
         "/auth/refresh"
+    };
+
+    public static final String[ ] SWAGGER_URLS = {
+        "/v3/api-docs",
+        "/swagger-ui/**",
+        "/webjars/**",
+        "/swagger-resources/**",
+        "/auth-service/swagger-ui/**"
     };
 
 
@@ -41,8 +55,10 @@ public class SecurityConfig {
         return http
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers(HttpMethod.POST, PUBLIC_URLS).permitAll()
-                .anyRequest().authenticated())
+                // .requestMatchers(PUBLIC_URLS).permitAll()
+                // .requestMatchers(SWAGGER_URLS).permitAll()
+                // .requestMatchers(HttpMethod.OPTIONS).permitAll()
+                .anyRequest().permitAll())
             .httpBasic(c  -> c.disable())
             .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
             .authenticationProvider(authenticationProvider)
@@ -73,4 +89,19 @@ public class SecurityConfig {
         foundToken.setRevoked(true);
         tokenRepository.save(foundToken);
     }
+
+    @Bean
+    CorsWebFilter corsWebFilter() {
+        CorsConfiguration corsConfig = new CorsConfiguration();
+        corsConfig.setAllowedOrigins(Arrays.asList("*"));
+        corsConfig.setMaxAge(3600L);
+        corsConfig.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        corsConfig.setAllowedHeaders(Arrays.asList("*"));
+        
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", corsConfig);
+        
+        return new CorsWebFilter(source);
+    }
+
 }

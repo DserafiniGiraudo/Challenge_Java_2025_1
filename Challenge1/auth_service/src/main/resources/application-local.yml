@@ -35,3 +35,6 @@ application:
       refresh-token:
         expiration: 604800000
 
+springdoc:
+  swagger-ui:
+    path: ${spring.application.name}/swagger-ui.html
