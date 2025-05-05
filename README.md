@@ -85,8 +85,6 @@ Cuando un servicio falla repetidamente:
 - Si es exitoso, vuelve a estado **closed**.
 
 ---
-
-
 ## ⚡ Uso de Lombok
 
 Este proyecto utiliza [**Lombok**](https://projectlombok.org/) para reducir la verbosidad del código Java, generando automáticamente métodos comunes como getters, setters, constructores, `equals()`, `hashCode()` y más.
