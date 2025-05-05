@@ -1,0 +1,828 @@
+{
+	"info": {
+		"_postman_id": "11ac82b0-e12c-49a8-b089-7eae14cb5a44",
+		"name": "challenge",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "challenge",
+			"item": [
+				{
+					"name": "msvc-puntos-ventas",
+					"item": [
+						{
+							"name": "getPuntosVenta",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8010/puntosVentas",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8010",
+									"path": [
+										"puntosVentas"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getPuntosVentaById",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8010/puntosVentas/10",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8010",
+									"path": [
+										"puntosVentas",
+										"10"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "new puntoVenta",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"puntoVenta\": \"Corrientes\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8010/puntosVentas",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8010",
+									"path": [
+										"puntosVentas"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getNombrePuntoVenta",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8010/puntosVentas/nombres/10",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8010",
+									"path": [
+										"puntosVentas",
+										"nombres",
+										"10"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update puntoVenta",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": null
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "msvc-puntos-costos",
+					"item": [
+						{
+							"name": "getCostos",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8020/costos",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8020",
+									"path": [
+										"costos"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "costosByPuntoVenta",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8020/costos/puntosVenta/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8020",
+									"path": [
+										"costos",
+										"puntosVenta",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "CostoMinimo",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"puntoA\": {\r\n    \"id\": 6\r\n  },\r\n  \"puntoB\": {\r\n    \"id\": 9\r\n  }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8020/costos/costoMinimo",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8020",
+									"path": [
+										"costos",
+										"costoMinimo"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "crearCosto(camino)",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"caminoPK\": {\r\n    \"puntoA\": {\r\n      \"id\": 9\r\n    },\r\n    \"puntoB\": {\r\n      \"id\": 8\r\n    }\r\n  },\r\n  \"costo\": 25\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8020/costos",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8020",
+									"path": [
+										"costos"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "msvc-acreditaciones",
+					"item": [
+						{
+							"name": "getAcreditacion",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8030/acreditaciones/680a265a9f0b2b1132aa96bd",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8030",
+									"path": [
+										"acreditaciones",
+										"680a265a9f0b2b1132aa96bd"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "new Acreditacion",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"identificadorPuntoVenta\" : 2,\r\n    \"importe\" : 15.5\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8030/acreditaciones",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8030",
+									"path": [
+										"acreditaciones"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "auth-service",
+					"item": [
+						{
+							"name": "register",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{   \r\n    \"name\": \"Paco\",\r\n    \"email\" : \"Paco@example.com\",\r\n    \"password\": \"Paco123\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8005/auth/register",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8005",
+									"path": [
+										"auth",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "login",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n   \"email\" : \"Paco@example.com\",\r\n    \"password\": \"Paco123\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8005/auth/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8005",
+									"path": [
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "refresh",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "BEARER ",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8005/auth/refresh",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8005",
+									"path": [
+										"auth",
+										"refresh"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "gateway",
+					"item": [
+						{
+							"name": "msvc-puntos-ventas",
+							"item": [
+								{
+									"name": "getPuntosVenta",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "eyJhbGciOiJIUzM4NCJ9.eyJuYW1lIjoiUGFjbyIsInN1YiI6IlBhY29AZXhhbXBsZS5jb20iLCJpYXQiOjE3NDYwNjI1OTksImV4cCI6MTc0NjA2NjE5OX0.CVI-BPgd9trKhfrkk2602-9q1qwszjav-A9bH0SrhXiRWrgvp7WZdQVbg4QopqGy",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8080/api/v1/puntosVentas",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"api",
+												"v1",
+												"puntosVentas"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "getPuntosVentaById",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "eyJhbGciOiJIUzM4NCJ9.eyJuYW1lIjoiUGFjbyIsInN1YiI6IlBhY29AZXhhbXBsZS5jb20iLCJpYXQiOjE3NDYwNTYwMjYsImV4cCI6MTc0NjA1OTYyNn0.kfeMTG17A5UEqsGLrP0kLroTzOJ0FaH_tC6X6VKlEuZX2g7EEYZj2TpIK5VN9LLv",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8080/api/v1/puntosVentas/10",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"api",
+												"v1",
+												"puntosVentas",
+												"10"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "new puntoVenta",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"puntoVenta\": \"Corrientes\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8080/api/v1/puntosVentas",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"api",
+												"v1",
+												"puntosVentas"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "getNombrePuntoVenta",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8080/api/v1/puntosVentas/nombres/10",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"api",
+												"v1",
+												"puntosVentas",
+												"nombres",
+												"10"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "update puntoVenta",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"puntoVenta\":\"Corrientes\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8080/api/v1/puntosVentas/11",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"api",
+												"v1",
+												"puntosVentas",
+												"11"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "msvc-puntos-costos",
+							"item": [
+								{
+									"name": "getCostos",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "eyJhbGciOiJIUzM4NCJ9.eyJuYW1lIjoiUGFjbyIsInN1YiI6IlBhY29AZXhhbXBsZS5jb20iLCJpYXQiOjE3NDYwNTYwMjYsImV4cCI6MTc0NjA1OTYyNn0.kfeMTG17A5UEqsGLrP0kLroTzOJ0FaH_tC6X6VKlEuZX2g7EEYZj2TpIK5VN9LLv",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8080/api/v1/costos",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"api",
+												"v1",
+												"costos"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "costosByPuntoVenta",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8080/api/v1/costos/puntosVenta/1",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"api",
+												"v1",
+												"costos",
+												"puntosVenta",
+												"1"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "CostoMinimo",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"puntoA\": {\r\n    \"id\": 6\r\n  },\r\n  \"puntoB\": {\r\n    \"id\": 9\r\n  }\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8080/api/v1/costos/costoMinimo",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"api",
+												"v1",
+												"costos",
+												"costoMinimo"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "crearCosto(camino)",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"caminoPK\": {\r\n    \"puntoA\": {\r\n      \"id\": 9\r\n    },\r\n    \"puntoB\": {\r\n      \"id\": 8\r\n    }\r\n  },\r\n  \"costo\": 25\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8080/api/v1/costos",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"api",
+												"v1",
+												"costos"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "msvc-acreditaciones",
+							"item": [
+								{
+									"name": "getAcreditacion",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "eyJhbGciOiJIUzM4NCJ9.eyJuYW1lIjoiUGFjbyIsInN1YiI6IlBhY29AZXhhbXBsZS5jb20iLCJpYXQiOjE3NDYwNTYwMjYsImV4cCI6MTc0NjA1OTYyNn0.kfeMTG17A5UEqsGLrP0kLroTzOJ0FaH_tC6X6VKlEuZX2g7EEYZj2TpIK5VN9LLv",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8080/api/v1/acreditaciones/6812b770f1c880542c1ede70",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"api",
+												"v1",
+												"acreditaciones",
+												"6812b770f1c880542c1ede70"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "new Acreditacion",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "eyJhbGciOiJIUzM4NCJ9.eyJuYW1lIjoiUGFjbyIsInN1YiI6IlBhY29AZXhhbXBsZS5jb20iLCJpYXQiOjE3NDYwNTYwMjYsImV4cCI6MTc0NjA1OTYyNn0.kfeMTG17A5UEqsGLrP0kLroTzOJ0FaH_tC6X6VKlEuZX2g7EEYZj2TpIK5VN9LLv",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"identificadorPuntoVenta\" : 2,\r\n    \"importe\" : 10.5\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8080/api/v1/acreditaciones",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"api",
+												"v1",
+												"acreditaciones"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "msvc-auth",
+							"item": [
+								{
+									"name": "register",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{   \r\n    \"name\": \"Paco\",\r\n    \"email\" : \"Paco@example.com\",\r\n    \"password\": \"Paco123\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8080/api/v1/auth/register",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"api",
+												"v1",
+												"auth",
+												"register"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "login",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n   \"email\" : \"Paco@example.com\",\r\n    \"password\": \"Paco123\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8080/api/v1/auth/login",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"api",
+												"v1",
+												"auth",
+												"login"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				}
+			]
+		}
+	]
+}
