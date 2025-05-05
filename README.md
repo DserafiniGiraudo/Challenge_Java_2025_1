@@ -1,6 +1,7 @@
 # 🧠 Challenge_Java_2025_1
-> Proyecto desarrollado con Java y Spring Boot, dockerizado y con test coverage.  
-> Permite la ejecución local mediante Docker y expone una API documentada con Swagger.
+
+> Proyecto desarrollado con **Java 17** y **Spring Boot**, dockerizado, con autenticación mediante **JWT**, cache en memoria y cobertura de tests.  
+> Permite ejecución local vía **Docker** y expone una API REST documentada con **Swagger**.
 
 ---
 
@@ -8,21 +9,24 @@
 
 - ⚙️ **Java 17**
 - 🌱 **Spring Boot**
-- 🐳 **Docker / Docker Compose**
-- ✅ **JUnit y Mockito para testing**
-- 🧪 **Cobertura de test: ~70%**
-- 🧾 **Swagger para documentación**
-- 🟥 **Redis** – Cache en memoria
+- 🔐 **JWT** – Autenticación basada en tokens
 - 🐬 **MySQL** – Base de datos relacional
+- 🍃 **MongoDB** – Base de datos NoSQL para auditorías o lecturas específicas
+- 🟥 **Redis** – Cache en memoria
+- 🧪 **JUnit & Mockito** – Testing unitario
+- 📈 **Cobertura de tests** – Aproximadamente 70%
+- 🧾 **Swagger** – Documentación de endpoints
+- 🐳 **Docker / Docker Compose** – Contenerización de la aplicación
 
+---
 
 ## ☕️ Características de Java 17
 
-Este proyecto utiliza **Java 17**, lo que nos permite aprovechar nuevas funcionalidades del lenguaje que mejoran la legibilidad, mantenibilidad y seguridad del código.
+Este proyecto aprovecha características modernas del lenguaje para mejorar la claridad y reducir el código repetitivo.
 
-### 🔹 `record` para clases inmutables
+### 🔹 Uso de `record`
 
-Simplificamos clases que sólo representan datos como requests/responses utilizando `record`, lo cual reduce el boilerplate automáticamente:
+Para estructuras de datos inmutables como requests/responses:
 
 ```java
 public record AcreditacionResponse(
@@ -33,19 +37,15 @@ public record AcreditacionResponse(
     LocalDate fechaPedido) {}
 ```
 
-## 🧩 Patrones de diseño utilizados
-
-Este proyecto aplica diversos patrones de diseño para mejorar la escalabilidad, mantenibilidad y claridad del código. La mayoría se encarga SpringBoot como el Singleton.
-
-### 🟢 Singleton
-Se utilizó para clases que deben tener una única instancia compartida, como servicios utilitarios o manejadores de configuración.
-
-> Ejemplo: `Servicios anotados con @Service, controladores con @RestController`
-
 ---
 
-### 🧱 Builder
-Se aplicó para la construcción de objetos complejos de manera controlada, especialmente en DTOs o configuraciones con muchos parámetros opcionales.
+## 🧩 Patrones de Diseño Aplicados
+
+- 🟢 **Singleton**  
+  Servicios y controladores gestionados como instancias únicas (`@Service`, `@RestController`).
+
+- 🧱 **Builder**  
+  Para objetos con múltiples parámetros opcionales o configuraciones detalladas:
 
 ```java
 PuntoVenta puntoVenta = PuntoVenta.builder()
@@ -54,148 +54,124 @@ PuntoVenta puntoVenta = PuntoVenta.builder()
         .build();
 ```
 
-## 🧱 Patrones de Microservicios Utilizados
+---
 
-Este proyecto adopta patrones arquitectónicos comunes en sistemas distribuidos para garantizar escalabilidad, disponibilidad y mantenimiento.
+## 🧱 Patrones de Microservicios
 
 ### 🔍 Service Discovery
-Mediante **Spring Cloud Eureka**, cada microservicio se registra en un servidor central que actúa como "páginas amarillas", permitiendo la detección dinámica entre ellos.
+- Implementado con **Spring Cloud Eureka**.
+- Cada microservicio se registra dinámicamente.
 
-> 📌 Patrón aplicado: **Service Registry & Discovery**
-
----
+> 📌 Patrón: *Service Registry & Discovery*
 
 ### 🧭 Load Balancing
-Con la integración de **Spring Cloud LoadBalancer** (o mediante un Gateway), se reparten automáticamente las peticiones entre múltiples instancias de un mismo servicio.
+- Balanceo de carga mediante **Spring Cloud LoadBalancer**.
 
-> 📌 Patrón aplicado: **Client-Side Load Balancing**
+> 📌 Patrón: *Client-Side Load Balancing*
 
----
+### ⚡ Circuit Breaker (Resiliencia)
+- Protege ante errores en cascada usando **Resilience4j**.
 
-### ⚡ Resiliencia (Circuit Breaker)
-
-Se implementó el patrón **Circuit Breaker** para proteger los microservicios ante fallos repetidos en dependencias externas. Esto evita que una falla en un servicio propague errores al resto del sistema.
-
-> 📌 Patrón aplicado: **Circuit Breaker (Resilience Pattern)**  
-> 🛠️ Implementado mediante: **Resilience4j**
-
-Cuando un servicio falla repetidamente:
-- El circuito **se abre** y se detienen temporalmente los llamados.
-- Luego, pasa a un estado **half-open** para verificar si el servicio se recuperó.
-- Si es exitoso, vuelve a estado **closed**.
+> 📌 Patrón: *Circuit Breaker (Resilience Pattern)*
 
 ---
-## ⚡ Uso de Lombok
 
-Este proyecto utiliza [**Lombok**](https://projectlombok.org/) para reducir la verbosidad del código Java, generando automáticamente métodos comunes como getters, setters, constructores, `equals()`, `hashCode()` y más.
+## ✨ Uso de Lombok
 
-### ✨ Anotaciones comunes utilizadas
+[Lombok](https://projectlombok.org/) permite eliminar código repetitivo:
 
-- `@Getter`, `@Setter` → Generan automáticamente los métodos de acceso.
-- `@Builder` → Facilita la creación de objetos con el patrón Builder.
-- `@AllArgsConstructor`, `@NoArgsConstructor` → Generan constructores.
-- `@Data` → Combina `@Getter`, `@Setter`, `@ToString`, `@EqualsAndHashCode`, y `@RequiredArgsConstructor`.
-- `@Value` → Marca la clase como inmutable.
+- `@Getter`, `@Setter`
+- `@Builder`, `@Data`
+- `@AllArgsConstructor`, `@NoArgsConstructor`
+- `@Value`
 
-### 🔍 Ejemplo:
+### Ejemplo:
 
 ```java
 @Data
 @AllArgsConstructor
 @Builder
 public class CaminoPK {
-
     private PuntoVenta puntoA;
     private PuntoVenta puntoB;
-
 }
 ```
 
-🧼 Esto promueve un enfoque de código limpio, enfocado en la lógica y no en el boilerplate.
-
-=======
-
-### 📂 Estructura del proyecto
-
-![image](https://github.com/user-attachments/assets/1dc52c8e-eedd-4829-ac07-fb7654c318c0)
- 
----
-
-### 📘 Swagger UI
-
-_Interfaz para explorar y probar los endpoints disponibles:_  
-![image](https://github.com/user-attachments/assets/c4e2aa5f-b839-49bc-8535-f722cec4930a)
-![image](https://github.com/user-attachments/assets/0cb33a1c-5896-4139-82bf-2c68d9731a44)
-![image](https://github.com/user-attachments/assets/b3354ab7-14f8-4892-95d1-879d8faa947d)
-
-
-Accedé a la documentación en:  
-➡️ [`http://localhost:8080/swagger-ui.html`](http://localhost:8080/swagger-ui.html)
+🧼 Promueve un enfoque de código limpio.
 
 ---
 
-### ✅ Cobertura de tests
+## 📘 Swagger UI
 
-![image](https://github.com/user-attachments/assets/adc47106-5ce5-40ec-9ae6-d5d5ceba3759)
+_Interfaz para explorar y probar los endpoints:_
 
+📍 Accedé a la documentación:  
+[`http://localhost:8080/swagger-ui.html`](http://localhost:8080/swagger-ui.html)
 
-**msvc-acreditaciones si bien tiene un porcentaje bajo, se debe a metodos privados y/o configuracion de inicalizacion que no se pueden acceder desde testing.
-=======
+---
 
+## ✅ Cobertura de Tests
 
+![Coverage](https://github.com/user-attachments/assets/adc47106-5ce5-40ec-9ae6-d5d5ceba3759)
+
+> ℹ️ *Nota: `msvc-acreditaciones` tiene menor cobertura debido a métodos privados o configuraciones de inicialización que no son directamente testeables.*
+
+---
+
+## 📂 Estructura del Proyecto
+
+![Structure](https://github.com/user-attachments/assets/1dc52c8e-eedd-4829-ac07-fb7654c318c0)
 
 ---
 
 ## ⚙️ Requisitos
 
-- Tener instalado uno de los siguientes:
-  - 🐳 [Docker Desktop](https://www.docker.com/products/docker-desktop/)
-  - 🧪 [Podman](https://podman.io/) (como alternativa a Docker)
-  
-> ⚠️ Si usás Podman, asegurate de tener habilitado el modo rootless o configurar `podman-docker` para que los comandos de Docker funcionen con Podman.
-
-- ☕ Java y 🧰 Maven (solo si querés correr la app sin contenedores)
+- 🐳 [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+- 🧪 [Podman](https://podman.io/) (alternativa rootless)
+- ☕ [Java](https://adoptium.net/) y 🧰 [Maven](https://maven.apache.org/) (si no usás contenedores)
 
 ---
 
-## 🚀 Ejecutar en entorno de desarrollo
+## 🚀 Ejecución en Entorno de Desarrollo
 
 1. **Clonar el repositorio**
-
    ```bash
    git clone https://github.com/DserafiniGiraudo/accenture-contents.git
    ```
-2. **Navegar a la raiz del proyecto
-   ```
+
+2. **Ir a la raíz del proyecto**
+   ```bash
    cd Challenge1
    ```
-3. **hacer una copia de ```env.template``` quitando el .template y cargandole los valores deseados ejemplo:
-    ```
-    #Entorno
-    ENVIRONMENT=dev
-    #Eureka
-    EUREKA_SERVER_PORT=8761
-    #Config Server
-    CONFIG_SERVER_PORT=8888
-    #Redis
-    REDIS_PORT=6379
-    #Microservicios
-    MSVC_PUNTOS_VENTAS_PORT=0
-    MSVC_PUNTOS_COSTOS_PORT=0
-    MSVC_ACREDITACIONES_PORT=0
-    GATEWAY_PORT=8080
-    
-    ##MySQL
-    MYSQL_PORT=3306
-    MYSQL_USER=aplicacionAcreditaciones
-    MYSQL_PASSWORD=1234
-    MYSQL_ROOT_PASSWORD=root
-    MYSQL_DATABASE=DBAcreditaciones
-    ```
-5. **Levantar la aplicación
+
+3. **Copiar `.env.template` a `.env` y personalizar los valores**
+
+   ```env
+   ENVIRONMENT=dev
+   EUREKA_SERVER_PORT=8761
+   CONFIG_SERVER_PORT=8888
+   REDIS_PORT=6379
+
+   MSVC_PUNTOS_VENTAS_PORT=0
+   MSVC_PUNTOS_COSTOS_PORT=0
+   MSVC_ACREDITACIONES_PORT=0
+   GATEWAY_PORT=8080
+
+   MYSQL_PORT=3306
+   MYSQL_USER=aplicacionAcreditaciones
+   MYSQL_PASSWORD=1234
+   MYSQL_ROOT_PASSWORD=root
+   MYSQL_DATABASE=DBAcreditaciones
    ```
-   ##con Docker
+
+4. **Levantar la aplicación**
+
+   ```bash
+   # Con Docker
    docker-compose up --build -d
-   ##con Podman
+
+   # O con Podman
    podman-compose up --build -d
    ```
+
+---
