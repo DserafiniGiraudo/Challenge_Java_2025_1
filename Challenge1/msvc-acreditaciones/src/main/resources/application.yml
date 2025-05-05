@@ -1,0 +1,68 @@
+server:
+  port: ${MSVC_ACREDITACIONES_PORT}
+
+spring:
+  application:
+    name: msvc-acreditaciones
+
+  datasource:
+    url: jdbc:mysql://mysql:3306/${MYSQL_DATABASE}?createDatabaseIfNotExist=true
+    username: ${MYSQL_USER}
+    password: ${MYSQL_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    format_sql: true
+
+  data:
+    mongodb:
+      host: ${MONGO_HOST:localhost}
+      port: ${MONGO_PORT:27017}
+      database: ${MONGO_INITDB_DATABASE:acreditaciones}
+      username: ${MONGO_INITDB_ROOT_USERNAME:root}
+      password: ${MONGO_INITDB_ROOT_PASSWORD:root}
+      authentication-database: ${MONGO_AUTH_SOURCE:admin}
+      uri: "mongodb://${spring.data.mongodb.username}:${spring.data.mongodb.password}@${spring.data.mongodb.host}:${spring.data.mongodb.port}/${spring.data.mongodb.database}?authSource=${spring.data.mongodb.authentication-database}"
+
+eureka:
+  client: 
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://eureka-server:8761/eureka
+
+  instance:
+    prefer-ip-address: true
+    hostname: msvc-acreditaciones
+    instance-id: ${spring.cloud.client.hostname}:${spring.application.name}:${server.port}
+
+services:
+  msvc-puntos-ventas:
+    url: http://msvc-puntos-ventas
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+  health:
+    circuitbreakers:
+      enabled: true
+      
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        register-health-indicator: true
+        sliding-window-size: 10
+        minimum-number-of-calls: 5
+        permitted-number-of-calls-in-half-open-state: 2
+        automatic-transition-from-open-to-half-open-enabled: true
+        wait-duration-in-open-state: 5s
+        failure-rate-threshold: 50

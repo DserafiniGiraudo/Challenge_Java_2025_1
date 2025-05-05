@@ -1,6 +1,5 @@
 # 🧠 Challenge_Java_2025_1
-
-> Proyecto desarrollado con Java y Spring Boot, dockerizado y con test coverage superior al 70%.  
+> Proyecto desarrollado con Java y Spring Boot, dockerizado y con test coverage.  
 > Permite la ejecución local mediante Docker y expone una API documentada con Swagger.
 
 ---
@@ -15,7 +14,7 @@
 - 🧾 **Swagger para documentación**
 - 🟥 **Redis** – Cache en memoria
 - 🐬 **MySQL** – Base de datos relacional
----
+
 
 ## ☕️ Características de Java 17
 
@@ -33,6 +32,7 @@ public record AcreditacionResponse(
     double importe,
     LocalDate fechaPedido) {}
 ```
+
 ## 🧩 Patrones de diseño utilizados
 
 Este proyecto aplica diversos patrones de diseño para mejorar la escalabilidad, mantenibilidad y claridad del código. La mayoría se encarga SpringBoot como el Singleton.
@@ -85,7 +85,6 @@ Cuando un servicio falla repetidamente:
 - Si es exitoso, vuelve a estado **closed**.
 
 ---
-
 ## ⚡ Uso de Lombok
 
 Este proyecto utiliza [**Lombok**](https://projectlombok.org/) para reducir la verbosidad del código Java, generando automáticamente métodos comunes como getters, setters, constructores, `equals()`, `hashCode()` y más.
@@ -114,6 +113,8 @@ public class CaminoPK {
 
 🧼 Esto promueve un enfoque de código limpio, enfocado en la lógica y no en el boilerplate.
 
+=======
+
 ### 📂 Estructura del proyecto
 
 ![image](https://github.com/user-attachments/assets/1dc52c8e-eedd-4829-ac07-fb7654c318c0)
@@ -137,7 +138,11 @@ Accedé a la documentación en:
 
 ![image](https://github.com/user-attachments/assets/adc47106-5ce5-40ec-9ae6-d5d5ceba3759)
 
+
 **msvc-acreditaciones si bien tiene un porcentaje bajo, se debe a metodos privados y/o configuracion de inicalizacion que no se pueden acceder desde testing.
+=======
+
+
 
 ---
 
@@ -164,7 +169,30 @@ Accedé a la documentación en:
    ```
    cd Challenge1
    ```
-3. Levantar la aplicación
+3. **hacer una copia de ```env.template``` quitando el .template y cargandole los valores deseados ejemplo:
+    ```
+    #Entorno
+    ENVIRONMENT=dev
+    #Eureka
+    EUREKA_SERVER_PORT=8761
+    #Config Server
+    CONFIG_SERVER_PORT=8888
+    #Redis
+    REDIS_PORT=6379
+    #Microservicios
+    MSVC_PUNTOS_VENTAS_PORT=0
+    MSVC_PUNTOS_COSTOS_PORT=0
+    MSVC_ACREDITACIONES_PORT=0
+    GATEWAY_PORT=8080
+    
+    ##MySQL
+    MYSQL_PORT=3306
+    MYSQL_USER=aplicacionAcreditaciones
+    MYSQL_PASSWORD=1234
+    MYSQL_ROOT_PASSWORD=root
+    MYSQL_DATABASE=DBAcreditaciones
+    ```
+5. **Levantar la aplicación
    ```
    ##con Docker
    docker-compose up --build -d
