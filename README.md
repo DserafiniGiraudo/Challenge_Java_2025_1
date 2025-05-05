@@ -9,17 +9,19 @@
 
 - ⚙️ **Java 21**
 - 🌱 **Spring Boot**
+- 🔐 **JWT** – Autenticación basada en tokens
 - 🐳 **Docker / Docker Compose**
-- ✅ **JUnit y Mockito para testing**
-- 🧪 **Cobertura de test: ~70%**
+- 🧪 **JUnit & Mockito** – Testing unitario
+- 📈 **Cobertura de tests** – Aproximadamente 70%
 - 🧾 **Swagger para documentación**
 - 🟥 **Redis** – Cache en memoria
 - 🐬 **MySQL** – Base de datos relacional
+- 🍃 **MongoDB** – Base de datos NoSQL
 ---
 
 ## ☕️ Características de Java 21
 
-Este proyecto utiliza **Java 21**, lo que nos permite aprovechar nuevas funcionalidades del lenguaje que mejoran la legibilidad, mantenibilidad y seguridad del código.
+Este proyecto utiliza **Java 21**, lo que nos permite aprovechar nuevas funcionalidades del lenguaje que mejoran la legibilidad, mantenibilidad y seguridad del código. En mi caso no utilicé herramientas propias  de esa JDK sino que fue por dependencia para poder usar lo ultimo de SpringBoot. Sin embargo use características de jdk anteriores
 
 ### 🔹 `record` para clases inmutables: Código más conciso y legible
 
@@ -117,9 +119,12 @@ public class CaminoPK {
 
 🧼 Esto promueve un enfoque de código limpio, enfocado en la lógica y no en el boilerplate.
 
-### 📂 Estructura del proyecto
+### 📂 Arquitectura del proyecto
 
-![image](https://github.com/user-attachments/assets/1dc52c8e-eedd-4829-ac07-fb7654c318c0)
+![image](https://github.com/user-attachments/assets/a29ba352-515e-4026-8c63-1b95fd5113f5)
+
+
+
  
 ---
 
@@ -129,6 +134,8 @@ _Interfaz para explorar y probar los endpoints disponibles:_
 ![image](https://github.com/user-attachments/assets/c4e2aa5f-b839-49bc-8535-f722cec4930a)
 ![image](https://github.com/user-attachments/assets/0cb33a1c-5896-4139-82bf-2c68d9731a44)
 ![image](https://github.com/user-attachments/assets/b3354ab7-14f8-4892-95d1-879d8faa947d)
+![image](https://github.com/user-attachments/assets/f7f6ff22-8180-4edf-b3d3-fc1afe06eb00)
+
 
 
 Accedé a la documentación en:  
